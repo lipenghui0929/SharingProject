@@ -8,15 +8,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class JSplitPaneUtil {
 	//序号、IMSI、手机号、状态(可用、不可用)、手机号、位置
-	static Object[] columnTitle = { "序号", "IMSI", "手机号", "状态(可用、不可用)", "手机号","位置"};
-	static Object[][] columndate = {
+	static Object[] columnTitle = { "序号", "IMSI", "电话", "状态(可用、不可用)", "手机号","位置"};
+	static Object[][] columndate = ColumndateUtil.listJsbArray();
+	
+	/*static Object[][] columndate = {
 			{ "aaaa", "www", "eeee", "www", "eeee" },
 			{ "aaaa", "www", "eeee", "www", "eeee" },
 			{ "aaaa", "www", "eeee", "www", "eeee" },
 			{ "aaaa", "www", "eeee", "www", "eeee" },
 			{ "aaaa", "www", "eeee", "www", "eeee" },
 			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" } };
+			{ "aaaa", "www", "eeee", "www", "eeee" } };*/
 	
 	static JTable upTable = ViewSetingUtil.createTableView(true, columndate,
 			columnTitle);
