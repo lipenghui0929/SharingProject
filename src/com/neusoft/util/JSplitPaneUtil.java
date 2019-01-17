@@ -7,8 +7,8 @@ import javax.swing.JTextArea;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class JSplitPaneUtil {
-	
-	static Object[] columnTitle = { "案卷档号", "案卷题名", "分类号档号", "存放地点", "归档日期" };
+	//序号、IMSI、手机号、状态(可用、不可用)、手机号、位置
+	static Object[] columnTitle = { "序号", "IMSI", "手机号", "状态(可用、不可用)", "手机号","位置"};
 	static Object[][] columndate = {
 			{ "aaaa", "www", "eeee", "www", "eeee" },
 			{ "aaaa", "www", "eeee", "www", "eeee" },
