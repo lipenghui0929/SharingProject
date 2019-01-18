@@ -1,30 +1,29 @@
 package com.neusoft.util;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import com.neusoft.base.ColumndateUtil;
+import com.neusoft.ddmk.damin.Jsb;
 
 public class JSplitPaneUtil {
 	//序号、IMSI、手机号、状态(可用、不可用)、手机号、位置
 	static Object[] columnTitle = { "序号", "IMSI", "电话", "状态(可用、不可用)", "手机号","位置"};
 	static Object[][] columndate = ColumndateUtil.listJsbArray();
 	
-	/*static Object[][] columndate = {
-			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" },
-			{ "aaaa", "www", "eeee", "www", "eeee" } };*/
+	static Object[][] formdate = {
+			{ "aaaa", "www", "eeee", "www", "eeee" } };
 	
-	static JTable upTable = ViewSetingUtil.createTableView(true, columndate,
+	static JTable upTable = ViewSetingUtil.createTableView(false, columndate,
 			columnTitle);
-	static JTable middleTable = ViewSetingUtil.createTableView(true, columndate,
+	static JTable middleTable = ViewSetingUtil.createTableView(false, columndate,
 			columnTitle);
-	static JTable downTable = ViewSetingUtil.createTableView(true, columndate,
+	static JTable downTable = ViewSetingUtil.createTableView(false, columndate,
 			columnTitle);
 	
 	/**
@@ -41,12 +40,12 @@ public class JSplitPaneUtil {
 			jSplitPane.setRightComponent(new JScrollPane(downTable));
 		}
 		// 设置中间分割条大小
-				jSplitPane.setDividerSize(10);
-				// 设置分割条位置
-				jSplitPane.setDividerLocation(185);
-				// 在分割条上添加小三角按钮可以实现JSplitPane左右/上下组件的快速展开或折叠。
-				jSplitPane.setOneTouchExpandable(true);
-				return jSplitPane;
+		jSplitPane.setDividerSize(10);
+		// 设置分割条位置
+		jSplitPane.setDividerLocation(185);
+		// 在分割条上添加小三角按钮可以实现JSplitPane左右/上下组件的快速展开或折叠。
+		jSplitPane.setOneTouchExpandable(true);
+		return jSplitPane;
 	}
 	
 	/**
@@ -109,7 +108,7 @@ public class JSplitPaneUtil {
 	public static JSplitPane createLandscapeJSplitPane(int newOrientation) {
 		JSplitPane jSplitPane = new JSplitPane(newOrientation);
 		jSplitPane.setDividerSize(10);
-		jSplitPane.setDividerLocation(200);
+		jSplitPane.setDividerLocation(50);
 		jSplitPane.setOneTouchExpandable(true);
 		return jSplitPane;
 	}
@@ -145,6 +144,56 @@ public class JSplitPaneUtil {
 		jSplitPane.setOneTouchExpandable(true);
 		return jSplitPane;
 		
+	}
+	
+	//点击按钮查询数据
+	public static JSplitPane createJSplitPaneByButton(JScrollPane leftJPanel,JSplitPane jSplitPane,Jsb jsb){
+		Object[][] qcolumndate = ColumndateUtil.listJsbArray(jsb);
+		JTable qdownTable = ViewSetingUtil.createTableView(false, qcolumndate,
+				columnTitle);
+	    jSplitPane.setLeftComponent(leftJPanel);
+	    jSplitPane.setRightComponent(new JScrollPane(qdownTable));
+		
+		// 设置中间分割条大小
+		jSplitPane.setDividerSize(10);
+		// 设置分割条位置
+		jSplitPane.setDividerLocation(185);
+		// 在分割条上添加小三角按钮可以实现JSplitPane左右/上下组件的快速展开或折叠。
+		jSplitPane.setOneTouchExpandable(true);
+		return jSplitPane;
+	}
+	
+	public static JSplitPane createJSplitPaneByButton(JScrollPane leftJPanel,JSplitPane jSplitPane){
+		
+		JPanel queryPanel = new JPanel();
+		
+		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JTextField dateText= new JTextField("时间");
+		JTextField dateField = new JTextField(15);
+		JButton queryBtn = new JButton("查询");
+		queryPanel.add(dateText);
+		queryPanel.add(dateField);
+		queryPanel.add(queryBtn);
+		/*JTextField bjhField;
+		JTextField sjhField;*/
+		JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
+		jSplitPane3.setLeftComponent(jScrollPaneU);
+	
+		JScrollPane jScrollPaneD = new JScrollPane(downTable);
+		jSplitPane3.setRightComponent(jScrollPaneD);
+		
+
+		jSplitPane.setLeftComponent(leftJPanel);
+		jSplitPane.setRightComponent(jSplitPane3);
+		   
+		
+		// 设置中间分割条大小
+		jSplitPane.setDividerSize(10);
+		// 设置分割条位置
+		jSplitPane.setDividerLocation(185);
+		// 在分割条上添加小三角按钮可以实现JSplitPane左右/上下组件的快速展开或折叠。
+		jSplitPane.setOneTouchExpandable(true);
+		return jSplitPane;
 	}
 
 }

@@ -16,12 +16,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.neusoft.ddmk.damin.Jsb;
 import com.neusoft.service.MainViewSetting;
 import com.neusoft.service.SeasDefaultTreeCellRenderer;
 import com.neusoft.util.DateUtil;
@@ -55,7 +57,13 @@ public class MainFrame extends JFrame {
 	JButton editBtn;
 	JButton deleteBtn;
 	JButton refreshBtn;
+	JButton queryBtn;
 	List<JButton> buttons;
+	//文本框
+	JTextField dateField;
+	JTextField bjhField;
+	JTextField sjhField;
+	
 	/**
 	 * 
 	 */
@@ -120,6 +128,43 @@ public class MainFrame extends JFrame {
 				loadTree();
 			}
 		});
+		//查询
+		queryBtn = new JButton("查询");
+		queryBtn.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("MainFrame.query"), false));
+		queryBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				Jsb jsb = new Jsb();
+				//接收号
+				String bjh = bjhField.getText().trim();
+				//本机号
+				String sjh = sjhField.getText().trim();
+				//时间
+				String date = dateField.getText().trim();
+				
+				if(bjh != null && !"".equals(bjh)){
+					jsb.setBjh(bjh);
+					jsb.setQueryforBjh(true);
+				}
+				if(sjh != null && !"".equals(sjh)){
+					jsb.setSjh(sjh);
+					jsb.setQueryforSjh(true);;
+				}
+				if((bjh != null && !"".equals(bjh)) || (sjh != null && !"".equals(sjh))){
+					add(JSplitPaneUtil.createJSplitPaneByButton(leftJPanel, jSplitPane,jsb));
+				}else{
+					add(JSplitPaneUtil.createJSplitPaneByButton(leftJPanel, jSplitPane));
+				}
+				
+				setButtonIsEnabled(buttons, true);
+				
+				System.out.println("date:"+date+";bjh"+bjh+";sjh:"+sjh);
+			}
+		});
+		dateField = new JTextField();
+		//dateField.setSize(20,20);
+		bjhField = new JTextField();
+		sjhField = new JTextField();
+		
 		toolBar.addSeparator();
 		toolBar.add(allSelectBtn);
 		toolBar.addSeparator();
@@ -128,6 +173,17 @@ public class MainFrame extends JFrame {
 		toolBar.add(editBtn);
 		toolBar.addSeparator();
 		toolBar.add(deleteBtn);
+		toolBar.addSeparator();
+		toolBar.add(queryBtn);
+		toolBar.addSeparator();
+		toolBar.add(dateField);
+		toolBar.addSeparator();
+		toolBar.add(sjhField);
+		toolBar.addSeparator();
+		toolBar.add(bjhField);
+		
+		
+		
 		toolBar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		getContainer().add(toolBar, BorderLayout.NORTH);
 		buttons = new ArrayList<JButton>();

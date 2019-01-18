@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Jsb {
 
+
 	private Integer id;
 
 	private String mc;
@@ -12,14 +13,18 @@ public class Jsb {
 
 	private String gh;
 
+	//端口号
 	private Integer dkh;
 
+	//卡池号
 	private Integer kch;
 
 	private String imsi;
 
+	//接收号
 	private String sjh;
 
+	//本机号
 	private String bjh;
 
 	private String nr;
@@ -27,6 +32,12 @@ public class Jsb {
 	private Date sj;
 	
 	private String bz;
+	
+	
+	/*=====================================================================*/
+	private boolean isQueryforSj;
+	private boolean isQueryforSjh;
+	private boolean isQueryforBjh;
 	
 	public String toString(){
 		return "id:"+id+"; mc:"+mc+"; nc:"+nc+"; gh:"+gh+"; dkh:"+dkh+"; kch:"+kch+"; imsi:"+imsi+"; sjh:"+sjh+"; bjh:"+bjh+"; nr:"+nr+";sj:"+sj+";bz:"+bz;
@@ -126,6 +137,30 @@ public class Jsb {
 
 	public void setBz(String bz) {
 		this.bz = bz;
+	}
+
+	public boolean isQueryforSj() {
+		return isQueryforSj;
+	}
+
+	public void setQueryforSj(boolean isQueryforSj) {
+		this.isQueryforSj = isQueryforSj;
+	}
+
+	public boolean isQueryforSjh() {
+		return isQueryforSjh;
+	}
+
+	public void setQueryforSjh(boolean isQueryforSjh) {
+		this.isQueryforSjh = isQueryforSjh;
+	}
+
+	public boolean isQueryforBjh() {
+		return isQueryforBjh;
+	}
+
+	public void setQueryforBjh(boolean isQueryforBjh) {
+		this.isQueryforBjh = isQueryforBjh;
 	}
 	
 	
