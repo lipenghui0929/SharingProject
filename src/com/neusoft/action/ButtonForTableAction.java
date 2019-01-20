@@ -30,7 +30,7 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 	JButton editButton = new JButton("ÐÞ¸Ä");
 	JButton deleteButton = new JButton("É¾³ý");
 
-	public ButtonForTableAction(JTable table) {
+	public ButtonForTableAction(JTable tableAndModel) {
 		super();
 //		JButton viewButton2 = new JButton(new AbstractAction("yy") {
 //			
@@ -48,7 +48,7 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 
 		//panel2.setOpaque(true);
 		
-		this.table = table;
+		this.table = tableAndModel;
 		model = (AbstractTableModel) table.getModel();
 		
 		panel2.add(editButton);
@@ -61,9 +61,9 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 				// TODO Auto-generated method stub
 				
 				int i = table.getSelectedRow();
-				String id = (String)model.getValueAt(i, 1);
+				/*String id = (String)model.getValueAt(i, 1);
 				Boolean removeFsb = fsbService.removeFsb(id);
-				System.out.println("deleteButton:"+id);
+				System.out.println("deleteButton:"+id);*/
 				//JOptionPane.showMessageDialog(null, s);
 			}
 		});
