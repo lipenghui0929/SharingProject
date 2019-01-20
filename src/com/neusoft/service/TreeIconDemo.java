@@ -143,7 +143,7 @@ public class TreeIconDemo extends JFrame {
 	 * @param frame
 	 */
 	public void createJSplitPane(JFrame frame) {
-		final Object[] columnTitle = { "案卷档号", "案卷题名", "分类号", "存放地点", "归档日期" };
+		final Object[] columnTitle = { "接收数据档号", "接收数据题名", "分类号", "存放地点", "归档日期" };
 		final Object[][] columndate = {
 				{ "aaaa", "www", "eeee", "www", "eeee" },
 				{ "aaaa", "www", "eeee", "www", "eeee" },
@@ -168,7 +168,7 @@ public class TreeIconDemo extends JFrame {
 		JTable middleTable = new JTable(columndate, columnTitle);
 		JTable downTable = new JTable(columndate, columnTitle);
 		JScrollPane upJPanel = new JScrollPane(upTable);// 上部分
-		Label labelUp = new Label("案卷");
+		Label labelUp = new Label("接收数据");
 		// upJPanel.add(labelUp,BorderLayout.NORTH);
 		JScrollPane middleJPanel = new JScrollPane(middleTable);// 中间部分
 		JScrollPane downJPanel = new JScrollPane(downTable);// 下部分
@@ -208,8 +208,8 @@ public class TreeIconDemo extends JFrame {
 
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("档案管理");
 		DefaultMutableTreeNode document = new DefaultMutableTreeNode("声像管理");
-		DefaultMutableTreeNode volumeNode = new DefaultMutableTreeNode("案卷");
-		DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("文件");
+		DefaultMutableTreeNode volumeNode = new DefaultMutableTreeNode("接收数据");
+		DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("发送数据");
 		DefaultMutableTreeNode electronicalFileNode = new DefaultMutableTreeNode(
 				"电子文件");
 		document.add(volumeNode);
@@ -271,8 +271,8 @@ public class TreeIconDemo extends JFrame {
 	 * @return
 	 */
 	public DefaultTreeModel createModel() {
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("案卷");
-		DefaultMutableTreeNode b = new DefaultMutableTreeNode("文件");
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("接收数据");
+		DefaultMutableTreeNode b = new DefaultMutableTreeNode("发送数据");
 		DefaultMutableTreeNode c = new DefaultMutableTreeNode("电子文件");
 		root.add(b);
 		root.add(c);

@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import com.neusoft.view.FieldSettingFrame;
+import com.sun.swing.internal.plaf.synth.resources.synth_it;
 
 public class ExcelUtil {
 
@@ -37,9 +38,9 @@ public class ExcelUtil {
 	 * @param columnTitle
 	 *            列头
 	 * @param volume
-	 *            案卷表格
+	 *            接收数据表格
 	 * @param file
-	 *            案卷表格
+	 *            接收数据表格
 	 * @param electronicalFile
 	 *            电子文件表格
 	 * @return
@@ -55,7 +56,7 @@ public class ExcelUtil {
 			out = new FileOutputStream(exportPath + File.separator + excelName
 					+ ".xls");
 			if (volume != null) {
-				HSSFSheet volumeSheet = workbook.createSheet("案卷");
+				HSSFSheet volumeSheet = workbook.createSheet("接收数据");
 				volumeSheet.setDefaultColumnWidth(15);
 				// 产生表格标题行
 				HSSFRow row = createRow(volumeSheet, columnTitle);
@@ -63,7 +64,7 @@ public class ExcelUtil {
 				setExcelRowData(volumeSheet, tableModel);
 			}
 			if (file != null) {
-				HSSFSheet fileSheet = workbook.createSheet("文件");
+				HSSFSheet fileSheet = workbook.createSheet("发送数据");
 				fileSheet.setDefaultColumnWidth(15);
 				// 产生表格标题行
 				HSSFRow row = createRow(fileSheet, columnTitle);
@@ -264,16 +265,17 @@ public class ExcelUtil {
 		if (hSSFSheet != null) {
 			int rowNum = hSSFSheet.getPhysicalNumberOfRows();
 			int columnNum = hSSFSheet.getRow(0).getPhysicalNumberOfCells();
-//			System.out.println("行" + rowNum + "列" + columnNum);
+			System.out.println("行" + rowNum + "列" + columnNum);
 			String fieldNameColumn = "";
 			for (int row = 1; row < rowNum; row++) {
 				String otherColumn = "";
+				
 				for (int column = 0; column < columnNum; column++) {
 					if (column == 0) {
 						fieldNameColumn = hSSFSheet.getRow(row).getCell(column).getStringCellValue();
 					}else {
 						if (column == 4) {
-							if (!"".equals(hSSFSheet.getRow(row).getCell(column).getStringCellValue())) {
+							if (hSSFSheet.getRow(row).getCell(column) != null && !"".equals(hSSFSheet.getRow(row).getCell(column).getStringCellValue())) {
 								otherColumn += hSSFSheet.getRow(row).getCell(column).getStringCellValue() + ",";
 							}
 						}else {
@@ -309,8 +311,8 @@ public class ExcelUtil {
 					sheetNameSize = sheetNames.size();
 					for (int i = 0; i < sheetNameSize; i++) {
 						String sheetName = sheetNames.get(i);
-						if ("案卷".equals(sheetName)) {
-							HSSFSheet volumeSheet = workbook.createSheet("案卷");
+						if ("接收数据".equals(sheetName)) {
+							HSSFSheet volumeSheet = workbook.createSheet("接收数据");
 							volumeSheet.setDefaultColumnWidth(15);
 							Map<String, String> fields = getFieldsByExcelPath(pathString, sheetName);
 							HSSFRow row = volumeSheet.createRow(0);
@@ -323,8 +325,21 @@ public class ExcelUtil {
 							    HSSFCell cell2 = row.createCell(index);
 								cell2.setCellValue(key);
 							}
-						}else if ("文件".equals(sheetName)) {
-							HSSFSheet volumeSheet = workbook.createSheet("文件");
+						}else if ("发送数据".equals(sheetName)) {
+							HSSFSheet volumeSheet = workbook.createSheet("发送数据");
+							volumeSheet.setDefaultColumnWidth(15);
+							Map<String, String> fields = getFieldsByExcelPath(pathString, sheetName);
+							HSSFRow row = volumeSheet.createRow(0);
+							int index = 0;
+							HSSFCell cell = row.createCell(index);
+							cell.setCellValue("volumeId");
+							for (Entry<String, String> entry: fields.entrySet()) {
+								index++;
+							    String key = entry.getKey();
+							    HSSFCell cell2 = row.createCell(index);
+								cell2.setCellValue(key);
+							}
+							/*HSSFSheet volumeSheet = workbook.createSheet("发送数据");
 							volumeSheet.setDefaultColumnWidth(15);
 							Map<String, String> fields = getFieldsByExcelPath(pathString, sheetName);
 							HSSFRow row = volumeSheet.createRow(0);
@@ -344,7 +359,7 @@ public class ExcelUtil {
 							    String key = entry.getKey();
 							    HSSFCell cell3 = row.createCell(index);
 								cell3.setCellValue(key);
-							}
+							}*/
 						}else if ("电子文件".equals(sheetName)) {
 							HSSFSheet volumeSheet = workbook.createSheet("电子文件");
 							volumeSheet.setDefaultColumnWidth(15);
@@ -387,7 +402,7 @@ public class ExcelUtil {
 	public static void main(String[] args) {
 		String pathString = SystemUtil.getProjectRootPath() + File.separator + FileUtil.findExcelFile(SystemUtil.getProjectRootPath(),"数据").get(0).getName();
 //		System.out.println(getSheetNamesByExcel(pathString));
-//		Map<String,String> fields = getFieldsByExcelPath(pathString,"案卷");
+//		Map<String,String> fields = getFieldsByExcelPath(pathString,"接收数据");
 //		System.out.println("**************************************************");
 //		for (Entry<String, String> entry: fields.entrySet()) {
 //

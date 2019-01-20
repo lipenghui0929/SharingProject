@@ -9,10 +9,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import com.neusoft.service.FsbService;
+import com.neusoft.service.impl.FsbServiceImpl;
 import com.neusoft.util.DateChooser;
 import com.neusoft.view.VolumeInputFrame;
 
 public class JTextFieldClickAction implements MouseListener{
+	
+	private static FsbService fsbService = new FsbServiceImpl(); 
+	
 	VolumeInputFrame volumeFrame = null;
 	String dateString = "";
 	JDialog frame;

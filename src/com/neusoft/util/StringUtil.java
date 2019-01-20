@@ -72,8 +72,8 @@ public class StringUtil {
 	 */
 	public static boolean isArchiveCategory(String nodeName) {
 		boolean flag = false;
-		if (!"案卷".equals(nodeName) && !"文件".equals(nodeName)
-				&& !"电子文件".equals(nodeName) && !nodeName.contains("档案管理")) {
+		if (!"接收数据".equals(nodeName) && !"发送数据".equals(nodeName)
+				&& !"电子文件".equals(nodeName) && !nodeName.contains("牛牛管理")) {
 			flag = true;
 		}
 		return flag;
