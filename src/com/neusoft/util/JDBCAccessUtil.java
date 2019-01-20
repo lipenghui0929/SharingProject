@@ -12,20 +12,20 @@ import java.io.InputStream;
 
 public class JDBCAccessUtil {
 	private static String url = "jdbc:Access:///e:/mk/receive.mdb";
-	//private static  Properties p = new Properties();
+	private static  Properties p = new Properties();
 	private static ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
-	/*static{
-		InputStream is = JDBCUtil.class.getResourceAsStream("/test_jdbcutil/jdbc.properties");
+	static{
+		InputStream is = JDBCAccessUtil.class.getResourceAsStream("/jdbc.properties");
 		try {p.load(is);} catch (Exception e) {}
-	}*/
+	}
    
    public static Connection getConnection()throws Exception{
 	   Connection conn = tl.get();
 	   if(tl.get() == null){
 	   
-		   Class.forName("com.hxtt.sql.access.AccessDriver");
+		   Class.forName(p.getProperty("access.driver"));
 	   
-		   conn = DriverManager.getConnection(url);
+		   conn = DriverManager.getConnection(p.getProperty("send.url"));
 		   tl.set(conn);
 		   return conn;
 	   }

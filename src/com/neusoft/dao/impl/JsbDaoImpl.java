@@ -37,7 +37,8 @@ public class JsbDaoImpl implements JsbDao{
 				jsb.setSjh(rs.getString(8));
 				jsb.setBjh(rs.getString(9));
 				jsb.setNr(rs.getString(10));
-				jsb.setBz(rs.getString(11));
+				jsb.setSj(rs.getDate(11));
+				jsb.setBz(rs.getString(12));
 				jsbs.add(jsb);
 				//System.out.println(jsb.toString());
 			}
@@ -60,13 +61,25 @@ public class JsbDaoImpl implements JsbDao{
 			conn = JDBCAccessUtil.getConnection();
 			pstm = conn.prepareStatement(SELECVT_SQL+queryCondition);
 			
-			if(queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh()){
+			if(queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){
 				pstm.setString(1, queryjsb.getSjh());
-			}else if(!queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh()){
+			}else if(!queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){
 				pstm.setString(1, queryjsb.getBjh());
-			}else if(queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh()){
+			}else if(!queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+				pstm.setDate(1, new java.sql.Date(queryjsb.getSj().getTime()));
+			}else if(queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){
 				pstm.setString(1, queryjsb.getSjh());
 				pstm.setString(2, queryjsb.getBjh());
+			}else if(queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+				pstm.setString(1, queryjsb.getSjh());
+				pstm.setDate(2, new java.sql.Date(queryjsb.getSj().getTime()));
+			}else if(!queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+				pstm.setString(1, queryjsb.getBjh());
+				pstm.setDate(2, new java.sql.Date(queryjsb.getSj().getTime()));
+			}else if(queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+				pstm.setString(1, queryjsb.getSjh());
+				pstm.setString(2, queryjsb.getBjh());
+				pstm.setDate(3, new java.sql.Date(queryjsb.getSj().getTime()));
 			}
 			
 			rs = pstm.executeQuery();
@@ -82,9 +95,10 @@ public class JsbDaoImpl implements JsbDao{
 				jsb.setSjh(rs.getString(8));
 				jsb.setBjh(rs.getString(9));
 				jsb.setNr(rs.getString(10));
-				jsb.setBz(rs.getString(11));
+				jsb.setSj(rs.getDate(11));
+				jsb.setBz(rs.getString(12));
 				jsbs.add(jsb);
-				System.out.println(jsb.toString());
+				//System.out.println(jsb.toString());
 			}
 			
 		} catch (Exception e) {

@@ -33,21 +33,12 @@ public class JsbServiceImpl implements JsbService {
 	}
 	@Override
 	public List<Jsb> listJsbsByDateAndJh(Jsb jsb) {
-		//生产查询条件 where ** = ?
-		StringBuffer sb = new StringBuffer("where ");
-		if(jsb.isQueryforSjh() && !jsb.isQueryforBjh()){
-			sb.append("sjh = ? ");
-		}else if(!jsb.isQueryforSjh() && jsb.isQueryforBjh()){
-			sb.append("bjh = ? ");
-		}else if(jsb.isQueryforSjh() && jsb.isQueryforBjh()){
-			sb.append("sjh = ? and bjh = ?");
-		}
 		Connection conn = null;
 		List<Jsb> jsbs = null;
 		try{
 			conn = JDBCAccessUtil.getConnection();
 			conn.setAutoCommit(false);
-			jsbs = jsbDao.listJsbsByDateAndJh(jsb, sb.toString());
+			jsbs = jsbDao.listJsbsByDateAndJh(jsb, getQueryCondition(jsb));
 			conn.commit();
 			return jsbs;
 		}catch(Exception e){
@@ -57,6 +48,28 @@ public class JsbServiceImpl implements JsbService {
 			JDBCAccessUtil.close(conn);
 		}
 		return jsbs;
+	}
+	
+	public String getQueryCondition(Jsb queryjsb){
+		//生产查询条件 where ** = ?
+		StringBuffer sb = new StringBuffer("where 1=1 ");
+		if(queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){
+			sb.append("and sjh = ? ");
+		}else if(!queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){
+			sb.append("and bjh = ? ");
+		}else if(!queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+			sb.append("and sj = ? ");
+		}else if(queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){
+			sb.append("and sjh = ? and bjh = ?");
+		}else if(queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+			sb.append("and sjh = ? and sj = ?");
+		}else if(!queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+			sb.append("and bjh = ? and sj = ?");
+		}else if(queryjsb.isQueryforSjh() && queryjsb.isQueryforBjh() && queryjsb.isQueryforSj()){
+			sb.append("and sjh = ? and bjh = ? and sj = ?");
+		}
+		return sb.toString();
+		
 	}
 
 }

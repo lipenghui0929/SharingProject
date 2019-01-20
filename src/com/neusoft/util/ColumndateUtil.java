@@ -8,7 +8,7 @@ import com.neusoft.service.impl.JsbServiceImpl;
 
 public class ColumndateUtil {
 	
-	private static final int ARRAYS_SIZE = 6;
+	/*private static final int ARRAYS_SIZE = 6;
 	
 	public static Object[][] listJsbArray(){
 		Object[][] datas = null;
@@ -30,5 +30,5 @@ public class ColumndateUtil {
 		return datas;
 		
 	}
-	
+	*/
 }

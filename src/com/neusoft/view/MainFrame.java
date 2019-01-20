@@ -8,12 +8,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -23,9 +25,12 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.eltima.components.ui.DatePicker;
+import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
 import com.neusoft.service.MainViewSetting;
 import com.neusoft.service.SeasDefaultTreeCellRenderer;
+import com.neusoft.util.DatePluginUtil;
 import com.neusoft.util.DateUtil;
 import com.neusoft.util.ExcelUtil;
 import com.neusoft.util.FileUtil;
@@ -46,6 +51,7 @@ import com.neusoft.util.ViewSetingUtil;
 public class MainFrame extends JFrame {
 
 	public JTree tree;
+	private JFrame T = this;
 	public DefaultMutableTreeNode top = new DefaultMutableTreeNode("牛牛管理");
 	JScrollPane leftJPanel;
 	JScrollPane rightJPanel;
@@ -57,12 +63,11 @@ public class MainFrame extends JFrame {
 	JButton editBtn;
 	JButton deleteBtn;
 	JButton refreshBtn;
-	JButton queryBtn;
 	List<JButton> buttons;
-	//文本框
-	JTextField dateField;
-	JTextField bjhField;
-	JTextField sjhField;
+	//查询模块
+	JPanel queryPanelForJsb = new JPanel();
+	JPanel queryPanelForFsb = new JPanel();
+
 	
 	/**
 	 * 
@@ -128,42 +133,6 @@ public class MainFrame extends JFrame {
 				loadTree();
 			}
 		});
-		//查询
-		queryBtn = new JButton("查询");
-		queryBtn.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("MainFrame.query"), false));
-		queryBtn.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				Jsb jsb = new Jsb();
-				//接收号
-				String bjh = bjhField.getText().trim();
-				//本机号
-				String sjh = sjhField.getText().trim();
-				//时间
-				String date = dateField.getText().trim();
-				
-				if(bjh != null && !"".equals(bjh)){
-					jsb.setBjh(bjh);
-					jsb.setQueryforBjh(true);
-				}
-				if(sjh != null && !"".equals(sjh)){
-					jsb.setSjh(sjh);
-					jsb.setQueryforSjh(true);;
-				}
-				if((bjh != null && !"".equals(bjh)) || (sjh != null && !"".equals(sjh))){
-					add(JSplitPaneUtil.createJSplitPaneByButton(leftJPanel, jSplitPane,jsb));
-				}else{
-					add(JSplitPaneUtil.createJSplitPaneByButton(leftJPanel, jSplitPane));
-				}
-				
-				setButtonIsEnabled(buttons, true);
-				
-				System.out.println("date:"+date+";bjh"+bjh+";sjh:"+sjh);
-			}
-		});
-		dateField = new JTextField();
-		//dateField.setSize(20,20);
-		bjhField = new JTextField();
-		sjhField = new JTextField();
 		
 		toolBar.addSeparator();
 		toolBar.add(allSelectBtn);
@@ -173,14 +142,6 @@ public class MainFrame extends JFrame {
 		toolBar.add(editBtn);
 		toolBar.addSeparator();
 		toolBar.add(deleteBtn);
-		toolBar.addSeparator();
-		toolBar.add(queryBtn);
-		toolBar.addSeparator();
-		toolBar.add(dateField);
-		toolBar.addSeparator();
-		toolBar.add(sjhField);
-		toolBar.addSeparator();
-		toolBar.add(bjhField);
 		
 		
 		
@@ -230,6 +191,8 @@ public class MainFrame extends JFrame {
 		exitSystemWarn();
 		createJSplitPane(this);
 		addToolBar(this);
+		addQueryPanelForJsb();
+		addQueryPanelForFsb();
 		new TimeGo().start();// 启动线程
 	}
 
@@ -290,13 +253,14 @@ public class MainFrame extends JFrame {
 				if (node == null)
 					return;
 				Object object = node.getUserObject();
-				if (StringUtil.isArchiveCategory(object.toString())) {
-					// 说明选中的节点是档案门类的节点，而不是选中档案管理，案卷，文件，电子文件节点
-					// 选中档案门类节点，主窗口的右侧加载该档案门类下的案卷，文件，电子文件(3级)或者文件，电子文件(2级)
-					add(JSplitPaneUtil.createJSplitPaneByBranch(node, leftJPanel, jSplitPane));
+				/*// 说明选中的节点是档案门类的节点，而不是选中档案管理，接收数据，文件，电子文件节点
+				// 选中档案门类节点，主窗口的右侧加载该档案门类下的接收数据，文件，电子文件(3级)或者文件，电子文件(2级)*/
+				if ("接收数据".equals(object.toString())) {
+					//add(JSplitPaneUtil.createJSplitPaneByBranch(node, leftJPanel, jSplitPane));
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForJsb));
 					setButtonIsEnabled(buttons, true);
-				} else if (!StringUtil.isArchiveCategory(object.toString()) && (!"档案管理".equals(object.toString()))) {
-					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane));
+				} else if ("发送数据".equals(object.toString())) {
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForFsb));
 					setButtonIsEnabled(buttons, true);
 				} else {
 					jSplitPane.setLeftComponent(leftJPanel);
@@ -315,6 +279,111 @@ public class MainFrame extends JFrame {
 
 		});
 		return tree;
+	}
+	
+	/**
+	 * 查询块
+	 */
+	public void addQueryPanelForJsb(){
+		JTextField sjhText = new JTextField("接收号:");
+		final JTextField sjhField = new JTextField(15);
+		
+		JTextField bjhText  = new JTextField("本机号:");
+		final JTextField bjhField = new JTextField(15);
+		
+		JTextField dateText= new JTextField("时间:");
+		final DatePicker datepick = DatePluginUtil.getDatePicker();
+		//dateField = new JTextField(15);
+		
+		JButton queryBtn = new JButton("查询");
+		queryBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				/*DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+				Object object = node.getUserObject();
+				System.err.println(object);*/
+				Jsb jsb = new Jsb();
+				//接收号
+				String bjh = bjhField.getText().trim();
+				//本机号
+				String sjh = sjhField.getText().trim();
+				//时间
+				Date date = (Date)datepick.getValue();
+				
+				if(bjh != null && !"".equals(bjh)){
+					jsb.setBjh(bjh);
+					jsb.setQueryforBjh(true);
+				}
+				if(sjh != null && !"".equals(sjh)){
+					jsb.setSjh(sjh);
+					jsb.setQueryforSjh(true);;
+				}
+				if(date != null){
+					jsb.setSj(date);
+					jsb.setQueryforSj(true);
+				}
+				
+				add(JSplitPaneUtil.createJSplitPaneByButton(leftJPanel, jSplitPane,jsb,queryPanelForJsb));
+				setButtonIsEnabled(buttons, false);
+				System.out.println("date:"+date+";bjh"+bjh+";sjh:"+sjh);
+			}
+		});
+		
+		queryPanelForJsb.add(sjhText);
+		queryPanelForJsb.add(sjhField);
+		queryPanelForJsb.add(bjhText);
+		queryPanelForJsb.add(bjhField);
+		queryPanelForJsb.add(dateText);
+		queryPanelForJsb.add(datepick);
+		queryPanelForJsb.add(queryBtn);
+	}
+	public void addQueryPanelForFsb(){
+		
+		JTextField sjhText = new JTextField("接收号:");
+		final JTextField sjhField = new JTextField(15);
+		
+		JTextField bjhText  = new JTextField("本机号:");
+		final JTextField bjhField = new JTextField(15);
+		
+		JTextField dateText= new JTextField("时间:");
+		final DatePicker datepick = DatePluginUtil.getDatePicker();
+		//dateField = new JTextField(15);
+		
+		JButton queryBtn = new JButton("查询");
+		queryBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				Fsb fsb = new Fsb();
+				//接收号
+				String bjh = bjhField.getText().trim();
+				//本机号
+				String sjh = sjhField.getText().trim();
+				//时间
+				Date date = (Date)datepick.getValue();
+				
+				if(bjh != null && !"".equals(bjh)){
+					fsb.setBjh(bjh);
+					fsb.setQueryforBjh(true);
+				}
+				if(sjh != null && !"".equals(sjh)){
+					fsb.setSjh(sjh);
+					fsb.setQueryforSjh(true);;
+				}
+				if(date != null){
+					fsb.setSj(date);
+					fsb.setQueryforSj(true);
+				}
+				add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,fsb,queryPanelForFsb));
+				setButtonIsEnabled(buttons, false);
+				System.out.println("date:"+date+";bjh"+bjh+";sjh:"+sjh);
+			}
+		});
+		
+		queryPanelForFsb.add(sjhText);
+		queryPanelForFsb.add(sjhField);
+		queryPanelForFsb.add(bjhText);
+		queryPanelForFsb.add(bjhField);
+		queryPanelForFsb.add(dateText);
+		queryPanelForFsb.add(datepick);
+		queryPanelForFsb.add(queryBtn);
 	}
 
 	/**
