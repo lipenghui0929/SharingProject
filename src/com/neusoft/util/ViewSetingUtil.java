@@ -118,12 +118,6 @@ public class ViewSetingUtil extends JFrame{
 	    myTable.setFont(new Font("Menu.font", Font.PLAIN, 13));
 		myTable.setGridColor(Color.BLACK);
 		
-		ButtonForTableAction bt = new ButtonForTableAction(myTable);
-		TableColumn btnColumn = myTable.getColumnModel().getColumn(tableModel.getColumnCount()-1);
-		btnColumn.setCellRenderer(bt);
-		btnColumn.setCellEditor(bt);
-        
-		
 		DefaultTableCellRenderer render = new DefaultTableCellRenderer();
 		
 		for (int j = 0; j < columnCount; j++) {
@@ -134,8 +128,10 @@ public class ViewSetingUtil extends JFrame{
 			}
 			if("选择".equals(((String)tableModel.getColumnName(j)))){
 				column.setPreferredWidth(60);
+			}else if("操作".equals(((String)tableModel.getColumnName(j)))){
+				column.setPreferredWidth(170);
 			}else{
-				column.setPreferredWidth(180);
+				column.setPreferredWidth(120);
 			}
 			
 			
@@ -148,6 +144,16 @@ public class ViewSetingUtil extends JFrame{
 	 * 退出系统时的警告(一般是点击右上角的叉或者是点击退出系统按钮时需要提醒用户是否真的要退出系统时调用该方法)
 	 */
 	public static void exitSystemWarn() {
+		int exi = JOptionPane.showConfirmDialog(null, message, titleMessage,
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (exi == JOptionPane.YES_OPTION) {
+			System.exit(0); // 退出系统
+		} else {
+			return;
+		}
+	}
+	
+	public static void exitSystemToMinimum() {
 		int exi = JOptionPane.showConfirmDialog(null, message, titleMessage,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (exi == JOptionPane.YES_OPTION) {

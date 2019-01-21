@@ -25,7 +25,7 @@ public class JDBCAccessUtil {
 	   
 		   Class.forName(p.getProperty("access.driver"));
 	   
-		   conn = DriverManager.getConnection(p.getProperty("send.url"));
+		   conn = DriverManager.getConnection(p.getProperty("receive.url"));
 		   tl.set(conn);
 		   return conn;
 	   }

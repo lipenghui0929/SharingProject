@@ -1,19 +1,18 @@
 package com.neusoft.action;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.service.FsbService;
 import com.neusoft.service.impl.FsbServiceImpl;
 
@@ -53,18 +52,39 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 		
 		panel2.add(editButton);
 		panel2.add(deleteButton);
+		//editButton.setBackground(Color.red);
 		
-		deleteButton.addActionListener(new ActionListener() {
+		editButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				// TODO Auto-generated method stub
+				Fsb fsb = new Fsb();
+				int i = table.getSelectedRow();
+				//获取列数
+				int columnCount = model.getColumnCount(); 
+				for (int j = 0; j < columnCount; j++) {
+					String id = (String)model.getValueAt(i, j);
+				}
+				
+				/*Boolean removeFsb = fsbService.removeFsb(id);
+				System.out.println("deleteButton:"+id);*/
+				//JOptionPane.showMessageDialog(null, s);
+				//调用修改
+				Boolean modifyFsb = fsbService.modifyFsb(fsb);
+			}
+		});
+		
+      deleteButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
 				
 				int i = table.getSelectedRow();
-				/*String id = (String)model.getValueAt(i, 1);
+				String id = (String)model.getValueAt(i, 1);
 				Boolean removeFsb = fsbService.removeFsb(id);
-				System.out.println("deleteButton:"+id);*/
-				//JOptionPane.showMessageDialog(null, s);
+				System.out.println("deleteButton:"+id);
 			}
 		});
 	}

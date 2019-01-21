@@ -15,6 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.neusoft.action.ButtonForTableAction;
 import com.neusoft.base.ColumndateUtil;
 import com.neusoft.base.FsbTableModel;
+import com.neusoft.base.JsbTableModel;
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
 
@@ -55,16 +56,19 @@ public class JSplitPaneUtil {
 		return jSplitPane;
 	}*/
 	public static JSplitPane createJSplitPaneByLeafNode(DefaultMutableTreeNode node,JScrollPane leftJPanel,JSplitPane jSplitPane,JPanel queryPanel){
-		AbstractTableModel tableModel= null;
+		
 		Object object = node.getUserObject();
 		JTable downTable = null;
 		if ("接收数据".equals(object.toString())) {
-			//columnJsbdate = ColumndateUtil.listJsbArray(columnTitle.length);
+			downTable = ViewSetingUtil.createTableView(new JsbTableModel());
+			
 		} else if ("发送数据".equals(object.toString())) {
-			//columnJsbdate = ColumndateUtil.listFsbArray(columnTitle.length);
-			tableModel = new FsbTableModel();
-			//downTable = new JTable(tableModel);
-			downTable = ViewSetingUtil.createTableView(tableModel);
+			downTable = ViewSetingUtil.createTableView(new FsbTableModel());
+			//添加按钮
+			ButtonForTableAction bt = new ButtonForTableAction(downTable);
+			TableColumn btnColumn = downTable.getColumnModel().getColumn(downTable.getColumnCount()-1);
+			btnColumn.setCellRenderer(bt);
+			btnColumn.setCellEditor(bt);
 		}
 
 		
@@ -192,9 +196,9 @@ public class JSplitPaneUtil {
 	
 	//点击按钮查询数据
 	public static JSplitPane createJSplitPaneByButton(JScrollPane leftJPanel,JSplitPane jSplitPane,Jsb jsb,JPanel queryPanel){
-		Object[][] qcolumndate = ColumndateUtil.listJsbArray(jsb,columnTitle.length);
-		JTable qdownTable = ViewSetingUtil.createTableView(false, qcolumndate,
-				columnTitle);
+		
+		JTable qdownTable = ViewSetingUtil.createTableView(new JsbTableModel(jsb));
+		
 	    /*jSplitPane.setLeftComponent(leftJPanel);
 	    jSplitPane.setRightComponent(new JScrollPane(qdownTable));*/
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -219,9 +223,9 @@ public class JSplitPaneUtil {
 	}
 	
 	public static JSplitPane createJSplitPaneByButtonForFsb(JScrollPane leftJPanel,JSplitPane jSplitPane,Fsb fsb,JPanel queryPanel){
-		Object[][] qcolumndate = ColumndateUtil.listFsbArray(fsb,columnTitle.length);
-		JTable qdownTable = ViewSetingUtil.createTableView(false, qcolumndate,
-				columnTitle);
+		
+		JTable qdownTable = ViewSetingUtil.createTableView(new FsbTableModel(fsb));
+		
 	    /*jSplitPane.setLeftComponent(leftJPanel);
 	    jSplitPane.setRightComponent(new JScrollPane(qdownTable));*/
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
