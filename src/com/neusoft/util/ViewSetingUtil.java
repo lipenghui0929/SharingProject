@@ -1,6 +1,7 @@
 package com.neusoft.util;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -12,7 +13,9 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -24,7 +27,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -38,7 +43,10 @@ import org.jvnet.substance.skin.MistAquaSkin;
 import org.jvnet.substance.skin.OfficeSilver2007Skin;
 import org.jvnet.substance.skin.SaharaSkin;
 
+import com.neusoft.action.ButtonForTableAction;
+import com.neusoft.base.FsbTableModel;
 import com.neusoft.service.SeasTableCellRenderer;
+
 
 /**
  * 界面设置工具类
@@ -72,6 +80,7 @@ public class ViewSetingUtil extends JFrame{
 	 */
 	public static JTable createTableView(boolean isEnabled,Object[][] table, Object[] columnTitle) {
 		JTable myTable = new JTable(table, columnTitle);
+		
 //		myTable.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
 		myTable.setFont(new Font("Menu.font", Font.PLAIN, 13));
 		myTable.setEnabled(isEnabled); // 不可以编辑
@@ -79,6 +88,7 @@ public class ViewSetingUtil extends JFrame{
 		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);// 水平滚动条
 		SeasTableCellRenderer seasRender = new SeasTableCellRenderer();
 		DefaultTableCellRenderer render = new DefaultTableCellRenderer();
+		
 		for (int j = 0; j < columnTitle.length; j++) {
 			boolean flag = ((String)columnTitle[j]).contains("档号");
 			if (flag) {
@@ -94,10 +104,56 @@ public class ViewSetingUtil extends JFrame{
 		
 	}
 	
+	public static JTable createTableView(AbstractTableModel tableModel) {
+		
+		int columnCount = tableModel.getColumnCount();
+		
+		JTable myTable = new JTable(tableModel);
+		
+		
+		myTable.setRowHeight(30);
+		myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);// 水平滚动条
+		
+//		myTable.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
+	    myTable.setFont(new Font("Menu.font", Font.PLAIN, 13));
+		myTable.setGridColor(Color.BLACK);
+		
+		DefaultTableCellRenderer render = new DefaultTableCellRenderer();
+		
+		for (int j = 0; j < columnCount; j++) {
+			TableColumn column = myTable.getColumnModel().getColumn(j);
+			if(!"选择".equals(((String)tableModel.getColumnName(j))) && !"操作".equals(((String)tableModel.getColumnName(j)))){
+				render.setHorizontalAlignment(SwingConstants.CENTER);
+				myTable.getColumn(tableModel.getColumnName(j)).setCellRenderer(render); // 单元格中的文本居中显示
+			}
+			if("选择".equals(((String)tableModel.getColumnName(j)))){
+				column.setPreferredWidth(60);
+			}else if("操作".equals(((String)tableModel.getColumnName(j)))){
+				column.setPreferredWidth(170);
+			}else{
+				column.setPreferredWidth(120);
+			}
+			
+			
+		}
+		return myTable;
+		
+	}
+
 	/**
 	 * 退出系统时的警告(一般是点击右上角的叉或者是点击退出系统按钮时需要提醒用户是否真的要退出系统时调用该方法)
 	 */
 	public static void exitSystemWarn() {
+		int exi = JOptionPane.showConfirmDialog(null, message, titleMessage,
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (exi == JOptionPane.YES_OPTION) {
+			System.exit(0); // 退出系统
+		} else {
+			return;
+		}
+	}
+	
+	public static void exitSystemToMinimum() {
 		int exi = JOptionPane.showConfirmDialog(null, message, titleMessage,
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (exi == JOptionPane.YES_OPTION) {

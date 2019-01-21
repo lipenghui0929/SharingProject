@@ -9,7 +9,9 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,6 +33,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.neusoft.action.JTextFieldClickAction;
+import com.neusoft.base.ColumndateUtil;
+import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.util.DateUtil;
 import com.neusoft.util.ExcelUtil;
 import com.neusoft.util.FileUtil;
@@ -96,7 +100,7 @@ public class VolumeInputFrame extends JFrame {
 					// 数据校验成功，调用保存方法
 					String pathString = SystemUtil.getProjectRootPath() + File.separator
 							+ FileUtil.findExcelFile(SystemUtil.getProjectRootPath(), "数据").get(0).getName();
-					boolean isSuccess = saveVolumeData(pathString, "案卷", components);
+					boolean isSuccess = saveVolumeDataToDb(pathString, "发送数据", components);
 					if (isSuccess) {
 						JOptionPane.showMessageDialog(null, "保存成功！", "提示", JOptionPane.WARNING_MESSAGE);
 					}
@@ -173,6 +177,72 @@ public class VolumeInputFrame extends JFrame {
 					e.printStackTrace();
 				}
 			}
+		}
+		return flag;
+	}
+	
+	public boolean saveVolumeDataToDb(String pathString, String levelsName, Component[] components) {
+		boolean flag = true;
+		HSSFWorkbook hssFWorkbook = ExcelUtil.getHSSFWorkbookByExcelPath(pathString);
+		HSSFSheet hssFSheet = ExcelUtil.getHSSFSheet(hssFWorkbook, levelsName);
+		/*List<String> fields = ExcelUtil.getFieldsByDataExcelPath(hssFSheet);
+		HSSFRow hssFRow = ExcelUtil.createRow(hssFSheet);
+		int fieldCount = fields.size();*/
+		int componentLength = components.length;
+		try {
+			Fsb fsb = new Fsb();
+			for (int j = 0; j < componentLength; j++) {
+				if (components[j] instanceof JTextField) {
+					// 得到每个文本框的名字
+		
+					JTextField jtextField = (JTextField) components[j];
+					String jTextFieldName = jtextField.getName();
+					String textField = jtextField.getText();
+					System.out.println("jTextFieldName = "  +  jTextFieldName);
+					System.out.println("字段= " + textField);
+					
+					if("名称".equals(jTextFieldName)){
+						fsb.setMc(textField);
+					}else if("昵称".equals(jTextFieldName)){
+						fsb.setNc(textField);
+					}else if("gh".equals(jTextFieldName)){
+						fsb.setGh(textField);
+					}else if("端口号".equals(jTextFieldName)){
+						fsb.setDkh(Integer.valueOf(textField));
+					}else if("卡池号".equals(jTextFieldName)){
+						fsb.setKch(Integer.valueOf(textField));
+					}else if("串码".equals(jTextFieldName)){
+						fsb.setImsi(textField);
+					}else if("本机号".equals(jTextFieldName)){
+						fsb.setBjh(textField);
+					}else if("号码".equals(jTextFieldName)){
+						fsb.setSjh(textField);
+					}else if("类型".equals(jTextFieldName)){
+						fsb.setLx(textField);
+					}else if("内容".equals(jTextFieldName)){
+						fsb.setNr(textField);
+					}else if("次数".equals(jTextFieldName)){
+						fsb.setCs(Integer.valueOf(textField));
+					}else if("休息".equals(jTextFieldName)){
+						fsb.setXx(textField);
+					}else if("时间".equals(jTextFieldName)){
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						Date date = sdf.parse(textField);
+						fsb.setSj(date);
+					}else if("备注".equals(jTextFieldName)){
+						fsb.setBz(textField);
+					}else if("状态".equals(jTextFieldName)){
+						fsb.setZt(textField);
+					}
+					
+			    }	
+			}
+			flag = ColumndateUtil.saveFsb(fsb);
+
+			
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
 		}
 		return flag;
 	}
@@ -394,8 +464,11 @@ public class VolumeInputFrame extends JFrame {
 		String pathString = SystemUtil.getProjectRootPath() + File.separator
 				+ FileUtil.findExcelFile(SystemUtil.getProjectRootPath(), "模板").get(0).getName();
 		// System.out.println(ExcelUtil.getSheetNamesByExcel(pathString));
-		Map<String, String> fields = ExcelUtil.getFieldsByExcelPath(pathString, "案卷");
-		produceViewByTemplate(createJPanel("声像档案-案卷"), fields);
+		/**
+		 * 指定打开新增数据模块
+		 */
+		Map<String, String> fields = ExcelUtil.getFieldsByExcelPath(pathString, "发送数据");
+		produceViewByTemplate(createJPanel("数据管理-发送数据"), fields);
 	}
 
 	/**

@@ -50,9 +50,9 @@ public class SeasDefaultTreeCellRenderer extends DefaultTreeCellRenderer {
 		// 判断是哪个文本的节点设置对应的值（这里如果节点传入的是一个实体,则可以根据实体里面的一个类型属性来显示对应的图标）
 		if ("档案管理".equals(str)) {
 			this.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("tree.SeasDefaultTreeCellRenderer"),true));
-		} else if ("案卷".equals(str)) {
+		} else if ("接收数据".equals(str)) {
 			this.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.volumeTable"),true));
-		} else if ("文件".equals(str)) {
+		} else if ("发送数据".equals(str)) {
 			this.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.fileTable"),true));
 		} else if ("电子文件".equals(str)) {
 			this.setIcon(ImageUtil

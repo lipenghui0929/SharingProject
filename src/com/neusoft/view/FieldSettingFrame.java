@@ -29,7 +29,7 @@ import com.neusoft.util.SystemUtil;
 import com.neusoft.util.ViewSetingUtil;
 
 /**
- * 案卷，文件，电子文件的字段信息类
+ * 接收数据，发送数据，电子发送数据的字段信息类
  * 
  * @author chenzhenhua
  *
@@ -44,11 +44,11 @@ public class FieldSettingFrame extends JFrame {
 	MainFrame mainFrame;
 
 	// 以二维数组和一维数组来创建一个JTable对象
-	Object[][] volumeTable = null; // 案卷数据表
+	Object[][] volumeTable = null; // 接收数据数据表
 
-	Object[][] fileTable = null; // 文件数据表
+	Object[][] fileTable = null; // 发送数据数据表
 
-	Object[][] electronicalFileTable = null; // 电子文件数据表
+	Object[][] electronicalFileTable = null; // 电子发送数据数据表
 	
 	JTable volumeTab = null;
 	
@@ -63,9 +63,9 @@ public class FieldSettingFrame extends JFrame {
 
 	private String archiveCategoryName;// 档案门类
 
-	private List<String> levelsName; // 档案等级(有案卷，文件，电子文件3级的或者文件，电子文件2级的)
+	private List<String> levelsName; // 档案等级(有接收数据，发送数据，电子发送数据3级的或者发送数据，电子发送数据2级的)
 
-	private Map<String, Map<String, String>> totalFieldsInfo;// 案卷和文件和电子文件下的字段信息
+	private Map<String, Map<String, String>> totalFieldsInfo;// 接收数据和发送数据和电子发送数据下的字段信息
 
 	public String getArchiveCategoryName() {
 		return archiveCategoryName;
@@ -112,33 +112,33 @@ public class FieldSettingFrame extends JFrame {
 	 * @param key
 	 */
 	private void setTableData(String key) {
-		if ("案卷".equals(key) || "文件".equals(key) || "电子文件".equals(key)) {
+		if ("接收数据".equals(key) || "发送数据".equals(key) || "电子发送数据".equals(key)) {
 			Map<String, String> volumeFieldsInfo = totalFieldsInfo.get(key);
 			int volumeFieldsCount = volumeFieldsInfo.size();
 			int column = columnTitle.length;
-			if ("案卷".equals(key)) {
+			if ("接收数据".equals(key)) {
 				volumeTable = new Object[volumeFieldsCount][column];
-			} else if ("文件".equals(key)) {
+			} else if ("发送数据".equals(key)) {
 				fileTable = new Object[volumeFieldsCount][column];
-			} else if ("电子文件".equals(key)) {
+			} else if ("电子发送数据".equals(key)) {
 				electronicalFileTable = new Object[volumeFieldsCount][column];
 			}
 			for (int i = 0; i < volumeFieldsCount;) {
 				for (int j = 0; j < column; j++) {
-					if ("案卷".equals(key)) {
+					if ("接收数据".equals(key)) {
 						volumeTable[i][j] = "";
-					} else if ("文件".equals(key)) {
+					} else if ("发送数据".equals(key)) {
 						fileTable[i][j] = "";
-					} else if ("电子文件".equals(key)) {
+					} else if ("电子发送数据".equals(key)) {
 						electronicalFileTable[i][j] = "";
 					}
 					for (String fieldKey : volumeFieldsInfo.keySet()) {
 						if (j == 0) {
-							if ("案卷".equals(key)) {
+							if ("接收数据".equals(key)) {
 								volumeTable[i][j] = fieldKey;
-							} else if ("文件".equals(key)) {
+							} else if ("发送数据".equals(key)) {
 								fileTable[i][j] = fieldKey;
-							} else if ("电子文件".equals(key)) {
+							} else if ("电子发送数据".equals(key)) {
 								electronicalFileTable[i][j] = fieldKey;
 							}
 						} else {
@@ -148,70 +148,70 @@ public class FieldSettingFrame extends JFrame {
 							if (strCount == 2) {
 								// 有2个,逗号
 								if (j == 1) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[0];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[0];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[0];
 									}
 								} else if (j == 2) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[1];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[1];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[1];
 									}
 								} else if (j == 3) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[2];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[2];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[2];
 									}
 								} else if (j == 4) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = "";
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = "";
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = "";
 									}
 								}
 							} else if (strCount == 3) {
 								// 有3个,逗号
 								if (j == 1) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[0];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[0];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[0];
 									}
 								} else if (j == 2) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[1];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[1];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[1];
 									}
 								} else if (j == 3) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[2];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[2];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[2];
 									}
 								} else if (j == 4) {
-									if ("案卷".equals(key)) {
+									if ("接收数据".equals(key)) {
 										volumeTable[i][j] = FieldsValue[3];
-									} else if ("文件".equals(key)) {
+									} else if ("发送数据".equals(key)) {
 										fileTable[i][j] = FieldsValue[3];
-									} else if ("电子文件".equals(key)) {
+									} else if ("电子发送数据".equals(key)) {
 										electronicalFileTable[i][j] = FieldsValue[3];
 									}
 								}
@@ -333,20 +333,20 @@ public class FieldSettingFrame extends JFrame {
 			frame.add(jPanel, BorderLayout.NORTH);
 			for (int i = 0; i < levelsName.size(); i++) {
 				String level = levelsName.get(i);
-				if (volumeTable != null && "案卷".equals(level)) {
+				if (volumeTable != null && "接收数据".equals(level)) {
 					volumeTab = setTableView(volumeTable, columnTitle);
 					JScrollPane panel1 = new JScrollPane(volumeTab);
 					tabbedPane.addTab(level + "-" + volumeTable.length + "个字段",
 							ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.volumeTable"),false),
 							panel1, level + "字段信息列表");
-				} else if (fileTable != null && "文件".equals(level)) {
+				} else if (fileTable != null && "发送数据".equals(level)) {
 					fileTab = setTableView(fileTable, columnTitle);
 					JScrollPane panel2 = new JScrollPane(fileTab);
 					tabbedPane.addTab(level + "-" + fileTable.length + "个字段",
 							ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.fileTable"),false),
 							panel2, level + "字段信息列表");
 				} else if (electronicalFileTable != null
-						&& "电子文件".equals(level)) {
+						&& "电子发送数据".equals(level)) {
 					electronicalFileTab = setTableView(
 							electronicalFileTable, columnTitle);
 					JScrollPane panel3 = new JScrollPane(electronicalFileTab);

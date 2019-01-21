@@ -28,9 +28,9 @@ public class FieldViewSetting {
 		Map<String, Map<String, String>> totalFieldsInfo = null;
 		for (int i = 0; i < LevelsName.size(); i++) {
 			String level = LevelsName.get(i);
-			if("案卷".equals(level)){
+			if("接收数据".equals(level)){
 				volumeFieldsInfo = XMLUtil.getFieldsInfo(document, level);
-			}else if ("文件".equals(level)) {
+			}else if ("发送数据".equals(level)) {
 				fileFieldsInfo = XMLUtil.getFieldsInfo(document, level);
 			}else{
 				//电子文件
@@ -41,10 +41,10 @@ public class FieldViewSetting {
 			totalFieldsInfo = new HashMap<String, Map<String, String>>();
 		}
 		if(volumeFieldsInfo != null){
-			totalFieldsInfo.put("案卷", volumeFieldsInfo);
+			totalFieldsInfo.put("接收数据", volumeFieldsInfo);
 		}
 		if(fileFieldsInfo != null){
-			totalFieldsInfo.put("文件", fileFieldsInfo);
+			totalFieldsInfo.put("发送数据", fileFieldsInfo);
 		}
 		if(electronicalFieldsInfo != null){
 			totalFieldsInfo.put("电子文件", electronicalFieldsInfo);

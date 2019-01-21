@@ -1,16 +1,32 @@
 package com.neusoft.ddmk.damin;
 
+import java.io.Serializable;
 import java.util.Date;
+/**
+ *  接收
+ * @author Administrator
+ *
+ */
+public class Jsb implements Serializable{
 
-public class Jsb {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 
+	/*
+	 * 名称
+	 */
 	private String mc;
-
+    /*
+     * 昵称
+     */
 	private String nc;
 
+	
 	private String gh;
 
 	//端口号
@@ -26,11 +42,20 @@ public class Jsb {
 
 	//本机号
 	private String bjh;
-
+	
+	/*
+	 *  短信内容
+	 */
 	private String nr;
 	
+	/*
+	 * 时间
+	 */
 	private Date sj;
 	
+	/*
+	 * 备注
+	 */
 	private String bz;
 	
 	
@@ -162,7 +187,7 @@ public class Jsb {
 	public void setQueryforBjh(boolean isQueryforBjh) {
 		this.isQueryforBjh = isQueryforBjh;
 	}
-	
+
 	
 
 }
