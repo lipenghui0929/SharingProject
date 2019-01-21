@@ -31,6 +31,7 @@ public class SerialTool {
 		try{
 			ArrayList<String> portArr=findPort();
 			for(String port:portArr){
+				port="COM12";
 				System.out.println(port);
 				//打开串口
 				SerialPort serialPort=openPort(port,baudrate);
@@ -48,7 +49,7 @@ public class SerialTool {
 				Thread.sleep(4000);
 				//接收返回数据
 				byte[] a=readFromPort(serialPort);
-				System.out.println("返回:"+new String(a));
+//				System.out.println("返回:"+new String(a));
 				byte[] s1="AT+CSMP=17,167,2,25".getBytes();
 				byte[] ss1=new byte[s1.length+2];
 				for(int i=0;i<s1.length;i++){
@@ -61,7 +62,7 @@ public class SerialTool {
 				sendToPort(serialPort,ss1);
 				Thread.sleep(4000);
 				byte[] a1=readFromPort(serialPort);
-				System.out.println("返回:"+new String(a1));
+//				System.out.println("返回:"+new String(a1));
 				byte[] s11="AT+CSCS=\"UCS2\"".getBytes();
 				byte[] ss11=new byte[s11.length+2];
 				for(int i=0;i<s11.length;i++){
@@ -74,7 +75,7 @@ public class SerialTool {
 				sendToPort(serialPort,ss11);
 				Thread.sleep(4000);
 				byte[] a11=readFromPort(serialPort);
-				System.out.println("返回:"+new String(a11));
+//				System.out.println("返回:"+new String(a11));
 				String hm=Snippet.cnToUnicodeHm("17338145202");
 				byte[] s2=("AT+CMGS=\""+hm+"\"").getBytes();
 				//往串口里指定手机号
