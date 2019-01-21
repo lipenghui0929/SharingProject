@@ -28,6 +28,7 @@ public class ColumndateUtil {
 				datas[i][3] = list.get(i).getMc();
 				datas[i][4] = list.get(i).getBjh();
 				datas[i][5] = list.get(i).getNr();
+				
 			}
 		}
 		

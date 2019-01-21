@@ -38,6 +38,7 @@ import com.neusoft.util.ImageUtil;
 import com.neusoft.util.JSplitPaneUtil;
 import com.neusoft.util.PropertiesUtil;
 import com.neusoft.util.StringUtil;
+import com.neusoft.util.SystemToMinimumUtil;
 import com.neusoft.util.SystemUtil;
 import com.neusoft.util.TreeUtil;
 import com.neusoft.util.ViewSetingUtil;
@@ -51,7 +52,7 @@ import com.neusoft.util.ViewSetingUtil;
 public class MainFrame extends JFrame {
 
 	public JTree tree;
-	private JFrame T = this;
+	private JFrame mainFrame = this;
 	public DefaultMutableTreeNode top = new DefaultMutableTreeNode("牛牛管理");
 	JScrollPane leftJPanel;
 	JScrollPane rightJPanel;
@@ -393,7 +394,10 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				ViewSetingUtil.exitSystemWarn();
+				 //ViewSetingUtil.exitSystemWarn();
+				//最小化
+				mainFrame.setVisible(false);
+				SystemToMinimumUtil.miniTray(mainFrame);
 			}
 		});
 	}
