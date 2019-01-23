@@ -59,12 +59,33 @@ public class ColumndateUtil {
 		
 	}
 	
+	public static Boolean saveJsb(Jsb jsb){
+		   
+		return jsbService.saveJsb(jsb);
+		
+	}
+   
+   public static Boolean removeJsb(String id){
+	   
+		return jsbService.removeJsb(id);
+		
+	}
+   
+   public static Boolean modifyJsb(Jsb jsb){
+	   
+		return jsbService.modifyJsb(jsb);
+		
+	}
+   
+	
    public static Object[][] listFsbArray(int arrysSize){
 		
 		List<Fsb> list = fsbService.listFsbs();
-		Object[][] datas = new Object[list.size()][arrysSize];
-		if(list.size() > 0){
+		System.out.println(list.size());
+		Object[][] datas = null;
+		if( list.size() > 0){
 			System.out.println(arrysSize);
+			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
 				datas[i][0] = new Boolean(false);
 				datas[i][1] = list.get(i).getId();
@@ -105,6 +126,18 @@ public class ColumndateUtil {
    public static Boolean saveFsb(Fsb fsb){
 	   
 		return fsbService.saveFsb(fsb);
+		
+	}
+   
+   public static Boolean removeFsb(String id){
+	   
+		return fsbService.removeFsb(id);
+		
+	}
+   
+   public static Boolean modifyFsb(Fsb fsb){
+	   
+		return fsbService.modifyFsb(fsb);
 		
 	}
 	

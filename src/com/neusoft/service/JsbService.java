@@ -9,4 +9,10 @@ public interface JsbService {
 	List<Jsb> listJsbs();
 	
 	List<Jsb> listJsbsByDateAndJh(Jsb jsb);
+	
+    public Boolean saveJsb(Jsb jsb);
+	
+	public Boolean removeJsb(String id);
+	
+	public Boolean modifyJsb(Jsb fjsb);
 }

@@ -109,4 +109,37 @@ public class JsbDaoImpl implements JsbDao{
 		return jsbs;
 	}
 
+	@Override
+	public void insertJsb(Jsb fsb) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteJsb(String id) {
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		try{
+			String sql = "delete from  jsb where id = ?";
+			conn = JDBCAccessUtil.getConnection("receive.url");
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, id);	
+			pstm.executeUpdate();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("É¾³ýÊ§°Ü",e);
+		}finally {
+			JDBCAccessUtil.close(pstm);
+		}
+		
+	}
+
+	@Override
+	public void updateJsb(Jsb fsb) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

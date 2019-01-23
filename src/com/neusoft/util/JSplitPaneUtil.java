@@ -66,11 +66,15 @@ public class JSplitPaneUtil {
 			downTable = ViewSetingUtil.createTableView(new FsbTableModel());
 		}
 		
+		int columnCount = downTable.getColumnCount();
 		//Ìí¼Ó°´Å¥
-		ButtonForTableAction bt = new ButtonForTableAction(downTable);
-		TableColumn btnColumn = downTable.getColumnModel().getColumn(downTable.getColumnCount()-1);
-		btnColumn.setCellRenderer(bt);
-		btnColumn.setCellEditor(bt);
+		ButtonForTableAction bt = new ButtonForTableAction(downTable,object.toString());
+		if(columnCount > 0){
+			TableColumn btnColumn = downTable.getColumnModel().getColumn(columnCount-1);
+			btnColumn.setCellRenderer(bt);
+			btnColumn.setCellEditor(bt);
+		}
+		
 		
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
