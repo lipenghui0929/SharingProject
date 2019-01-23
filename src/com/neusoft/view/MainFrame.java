@@ -26,6 +26,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.eltima.components.ui.DatePicker;
+import com.neusoft.action.JToolBarFieldAction;
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
 import com.neusoft.service.MainViewSetting;
@@ -54,6 +55,8 @@ public class MainFrame extends JFrame {
 	public JTree tree;
 	private JFrame mainFrame = this;
 	public DefaultMutableTreeNode top = new DefaultMutableTreeNode("≈£≈£π‹¿Ì");
+	JToolBarFieldAction jToolBarFieldAction = new JToolBarFieldAction();
+	
 	JScrollPane leftJPanel;
 	JScrollPane rightJPanel;
 	JSplitPane jSplitPane;
@@ -385,6 +388,7 @@ public class MainFrame extends JFrame {
 		queryPanelForFsb.add(dateText);
 		queryPanelForFsb.add(datepick);
 		queryPanelForFsb.add(queryBtn);
+		jToolBarFieldAction.UpLoadFile(queryPanelForFsb);
 	}
 
 	/**

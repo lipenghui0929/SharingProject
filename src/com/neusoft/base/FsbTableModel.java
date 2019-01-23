@@ -14,8 +14,8 @@ public class FsbTableModel extends AbstractTableModel {
 	Object[][] data = null;
 
 	// 定义表格每一列的数据类型
-	Class[] typeArray = { Boolean.class, Object.class, Object.class,
-			Object.class, Object.class, Object.class };
+	/*Class[] typeArray = { Boolean.class, Object.class, Object.class,
+			Object.class, Object.class, Object.class };*/
 
 
 	public FsbTableModel() {
