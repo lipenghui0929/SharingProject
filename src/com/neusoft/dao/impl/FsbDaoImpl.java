@@ -22,7 +22,7 @@ public class FsbDaoImpl implements FsbDao {
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(SELECVT_SQL);
 			rs = pstm.executeQuery();
 			while (rs.next()) {
@@ -62,7 +62,7 @@ public class FsbDaoImpl implements FsbDao {
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(SELECVT_SQL+queryCondition);
 			
 			if(queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
@@ -123,7 +123,7 @@ public class FsbDaoImpl implements FsbDao {
 		PreparedStatement pstm = null;
 		try{
 			String sql = "insert into fsb (id,mc,nc,gh,dkh,kch,imsi,bjh,sjh,lx,nr,cs,xx,sj,bz,zt) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, fsb.getId());
@@ -161,7 +161,7 @@ public class FsbDaoImpl implements FsbDao {
 		PreparedStatement pstm = null;
 		try{
 			String sql = "delete from  fsb where id = ?";
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, id);	
@@ -188,7 +188,7 @@ public class FsbDaoImpl implements FsbDao {
 					+ "cs = ?,xx = ?,sj = ?,bz = ?,zt = ? "
 					+ "where id = ?";
 			
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, fsb.getMc());

@@ -22,7 +22,7 @@ public class JsbDaoImpl implements JsbDao{
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("receive.url");
 			pstm = conn.prepareStatement(SELECVT_SQL);
 			rs = pstm.executeQuery();
 			while (rs.next()) {
@@ -58,7 +58,7 @@ public class JsbDaoImpl implements JsbDao{
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("receive.url");
 			pstm = conn.prepareStatement(SELECVT_SQL+queryCondition);
 			
 			if(queryjsb.isQueryforSjh() && !queryjsb.isQueryforBjh() && !queryjsb.isQueryforSj()){

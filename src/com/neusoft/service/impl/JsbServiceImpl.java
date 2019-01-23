@@ -18,7 +18,7 @@ public class JsbServiceImpl implements JsbService {
 		Connection conn = null;
 		List<Jsb> jsbs = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("receive.url");
 			conn.setAutoCommit(false);
 			jsbs = jsbDao.listJsbs();
 			conn.commit();
@@ -36,7 +36,7 @@ public class JsbServiceImpl implements JsbService {
 		Connection conn = null;
 		List<Jsb> jsbs = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("receive.url");
 			conn.setAutoCommit(false);
 			jsbs = jsbDao.listJsbsByDateAndJh(jsb, getQueryCondition(jsb));
 			conn.commit();

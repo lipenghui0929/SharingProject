@@ -23,7 +23,7 @@ public class ImsiDaoImpl implements ImsiDao {
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("imsi.url");
 			pstm = conn.prepareStatement(SELECVT_SQL);
 			rs = pstm.executeQuery();
 			while (rs.next()) {
@@ -64,7 +64,7 @@ public class ImsiDaoImpl implements ImsiDao {
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("imsi.url");
 			pstm = conn.prepareStatement(SELECVT_SQL+queryCondition);
 			
 			

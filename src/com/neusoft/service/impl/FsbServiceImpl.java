@@ -21,7 +21,7 @@ public class FsbServiceImpl implements FsbService{
 		Connection conn = null;
 		List<Fsb> fsbs = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			conn.setAutoCommit(false);
 			fsbs = fsbDao.listFsbs();
 			conn.commit();
@@ -40,7 +40,7 @@ public class FsbServiceImpl implements FsbService{
 		Connection conn = null;
 		List<Fsb> fsbs = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			conn.setAutoCommit(false);
 			fsbs = fsbDao.listFsbsByDateAndJh(queryfsb, getQueryCondition(queryfsb));
 			conn.commit();
@@ -82,7 +82,7 @@ public class FsbServiceImpl implements FsbService{
 		fsb.setId(UUID.randomUUID().toString());
 		Connection conn = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			conn.setAutoCommit(false);
 			fsbDao.insertFsb(fsb);
 			conn.commit();
@@ -101,7 +101,7 @@ public class FsbServiceImpl implements FsbService{
 		Boolean flag = true;
 		Connection conn = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			conn.setAutoCommit(false);
 			fsbDao.deleteFsb(id);
 			conn.commit();
@@ -121,7 +121,7 @@ public class FsbServiceImpl implements FsbService{
 		Boolean flag = true;
 		Connection conn = null;
 		try{
-			conn = JDBCAccessUtil.getConnection();
+			conn = JDBCAccessUtil.getConnection("send.url");
 			conn.setAutoCommit(false);
 			fsbDao.updateFsb(fsb);
 			conn.commit();

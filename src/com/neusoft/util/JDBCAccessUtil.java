@@ -19,13 +19,12 @@ public class JDBCAccessUtil {
 		try {p.load(is);} catch (Exception e) {}
 	}
    
-   public static Connection getConnection()throws Exception{
+   public static Connection getConnection(String url)throws Exception{
 	   Connection conn = tl.get();
 	   if(tl.get() == null){
-	   
 		   Class.forName(p.getProperty("access.driver"));
 	   
-		   conn = DriverManager.getConnection(p.getProperty("receive.url"));
+		   conn = DriverManager.getConnection(p.getProperty(url));
 		   tl.set(conn);
 		   return conn;
 	   }
