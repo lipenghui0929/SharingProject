@@ -111,7 +111,7 @@ public class TableRenderDemo extends JPanel {
     }
 
     class MyTableModel extends AbstractTableModel {
-     /*   private String[] columnNames = {"First Name",
+       private String[] columnNames = {"First Name",
                                         "Last Name",
                                         "Sport",
                                         "# of Years",
@@ -127,11 +127,11 @@ public class TableRenderDemo extends JPanel {
          "Speed reading", new Integer(20), new Boolean(true)},
         {"Joe", "Brown",
          "Pool", new Integer(10), new Boolean(false)}
-        };*/
+        };
 
-    	String[] columnNames = { "序号", "IMSI", "接收号", "状态(可用、不可用)", "本机号","内容"};
+    	//String[] columnNames = { "序号", "IMSI", "接收号", "状态(可用、不可用)", "本机号","内容"};
     	
-    	Object[][] data = ColumndateUtil.listFsbArray(columnNames.length);
+    	//Object[][] data = ColumndateUtil.listJsbArray(columnNames.length);
     	
         public final Object[] longValues = {"Jane", "Kathy",
                                             "None of the above",

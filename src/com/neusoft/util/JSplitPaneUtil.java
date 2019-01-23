@@ -64,13 +64,13 @@ public class JSplitPaneUtil {
 			
 		} else if ("发送数据".equals(object.toString())) {
 			downTable = ViewSetingUtil.createTableView(new FsbTableModel());
-			//添加按钮
-			ButtonForTableAction bt = new ButtonForTableAction(downTable);
-			TableColumn btnColumn = downTable.getColumnModel().getColumn(downTable.getColumnCount()-1);
-			btnColumn.setCellRenderer(bt);
-			btnColumn.setCellEditor(bt);
 		}
-
+		
+		//添加按钮
+		ButtonForTableAction bt = new ButtonForTableAction(downTable);
+		TableColumn btnColumn = downTable.getColumnModel().getColumn(downTable.getColumnCount()-1);
+		btnColumn.setCellRenderer(bt);
+		btnColumn.setCellEditor(bt);
 		
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		

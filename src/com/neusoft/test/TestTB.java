@@ -21,7 +21,11 @@ public class TestTB {
 														// hides another button
 		Object[][] data = { { "AAA", null }, { "BBB", null } };
 		model = new DefaultTableModel(data, columnNames) {
-			
+			 public Class getColumnClass(int c) {
+				 System.out.println("getColumnClass"+c);
+			     return getValueAt(0, c).getClass();
+			 }
+
 		};
 		table = new JTable(model);
 		table.setRowHeight(36);

@@ -9,13 +9,13 @@ public class JsbTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 2564872464841573178L;
 	
 	// 定义表头数据
-	String[] head = { "ID", "IMSI", "接收号", "状态(可用、不可用)", "本机号","内容"};
+	String[] head = { "选择","ID", "IMSI", "接收号", "状态(可用、不可用)", "本机号","内容","操作"};
 	
 	Object[][] data = null;
 
 	// 定义表格每一列的数据类型
-	Class[] typeArray = { Boolean.class, Object.class, Object.class,
-			Object.class, Object.class, Object.class };
+	/*Class[] typeArray = { Boolean.class, Object.class, Object.class,
+			Object.class, Object.class, Object.class };*/
    
 
 	public JsbTableModel() {
@@ -52,8 +52,11 @@ public class JsbTableModel extends AbstractTableModel {
 	// 使表格具有可编辑性
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		
-		return false;
+		if (columnIndex == 1) {
+	        return false;
+	    } else {
+	        return true;
+	    }
 	}
  
 	// 替换单元格的值
@@ -64,7 +67,7 @@ public class JsbTableModel extends AbstractTableModel {
 	}
 	
 	 public Class getColumnClass(int c) {
-		 //System.out.println("getColumnClass"+c);
+		 System.out.println("getColumnClass"+c);
 	     return getValueAt(0, c).getClass();
 	 }
 

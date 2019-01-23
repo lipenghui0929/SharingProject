@@ -22,12 +22,14 @@ public class ColumndateUtil {
 		Object[][] datas = new Object[list.size()][arrysSize];
 		if(list.size() > 0){
 			for (int i = 0; i < list.size(); i++) {
-				datas[i][0] = list.get(i).getId();
-				datas[i][1] = list.get(i).getImsi();
-				datas[i][2] = list.get(i).getSjh();
-				datas[i][3] = list.get(i).getMc();
-				datas[i][4] = list.get(i).getBjh();
-				datas[i][5] = list.get(i).getNr();
+				datas[i][0] = new Boolean(false);
+				datas[i][1] = list.get(i).getId();
+				datas[i][2] = list.get(i).getImsi();
+				datas[i][3] = list.get(i).getSjh();
+				datas[i][4] = list.get(i).getMc();
+				datas[i][5] = list.get(i).getBjh();
+				datas[i][6] = list.get(i).getNr();
+				datas[i][7] = new Object();
 				
 			}
 		}
@@ -42,12 +44,14 @@ public class ColumndateUtil {
 		Object[][] datas = new Object[list.size()][arrysSize];
 		if(list.size() > 0){
 			for (int i = 0; i < list.size(); i++) {
-				datas[i][0] = list.get(i).getId();
-				datas[i][1] = list.get(i).getImsi();
-				datas[i][2] = list.get(i).getSjh();
-				datas[i][3] = list.get(i).getMc();
-				datas[i][4] = list.get(i).getBjh();
-				datas[i][5] = list.get(i).getNr();
+				datas[i][0] = new Boolean(false);
+				datas[i][1] = list.get(i).getId();
+				datas[i][2] = list.get(i).getImsi();
+				datas[i][3] = list.get(i).getSjh();
+				datas[i][4] = list.get(i).getMc();
+				datas[i][5] = list.get(i).getBjh();
+				datas[i][6] = list.get(i).getNr();
+				datas[i][7] = new Object();
 			}
 		}
 		
@@ -83,12 +87,14 @@ public class ColumndateUtil {
 		Object[][] datas = new Object[list.size()][arrysSize];
 		if(list.size() > 0){
 			for (int i = 0; i < list.size(); i++) {
-				datas[i][0] = list.get(i).getId();
-				datas[i][1] = list.get(i).getImsi();
-				datas[i][2] = list.get(i).getSjh();
-				datas[i][3] = list.get(i).getMc();
-				datas[i][4] = list.get(i).getBjh();
-				datas[i][5] = list.get(i).getNr();
+				datas[i][0] = new Boolean(false);
+				datas[i][1] = list.get(i).getId();
+				datas[i][2] = list.get(i).getImsi();
+				datas[i][3] = list.get(i).getSjh();
+				datas[i][4] = list.get(i).getMc();
+				datas[i][5] = list.get(i).getBjh();
+				datas[i][6] = list.get(i).getNr();
+				datas[i][7] = new Object();
 			}
 		}
 		
