@@ -35,7 +35,11 @@ public class JsbTableModel extends AbstractTableModel {
 	// 获得表格的行数
 	@Override
 	public int getRowCount() {
-		return data.length;
+
+		if(data != null){
+			return data.length;
+		}
+		return 0;
 	}
 
 	// 获得表格的列名称
@@ -46,7 +50,10 @@ public class JsbTableModel extends AbstractTableModel {
  
 	// 获得表格的单元格的数据
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data[rowIndex][columnIndex];
+		if(data != null){
+			return data[rowIndex][columnIndex];
+		}
+		return data;
 	}
  
 	// 使表格具有可编辑性
@@ -67,8 +74,12 @@ public class JsbTableModel extends AbstractTableModel {
 	}
 	
 	 public Class getColumnClass(int c) {
-		 System.out.println("getColumnClass"+c);
-	     return getValueAt(0, c).getClass();
+		// System.out.println("getColumnClass"+c);
+		 if(data != null){
+			 return getValueAt(0, c).getClass();
+		 }
+		 return null;
+	    
 	 }
 
 }

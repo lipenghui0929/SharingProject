@@ -71,5 +71,33 @@ public class JsbServiceImpl implements JsbService {
 		return sb.toString();
 		
 	}
+	@Override
+	public Boolean saveJsb(Jsb jsb) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Boolean removeJsb(String id) {
+		Boolean flag = true;
+		Connection conn = null;
+		try{
+			conn = JDBCAccessUtil.getConnection("receive.url");
+			conn.setAutoCommit(false);
+			jsbDao.deleteJsb(id);
+			conn.commit();
+		}catch(Exception e){
+			flag = false;
+			try {conn.rollback();} catch (SQLException e1) {}
+			e.printStackTrace();
+		}finally {
+			JDBCAccessUtil.close(conn);
+		}
+		return flag;
+	}
+	@Override
+	public Boolean modifyJsb(Jsb fjsb) {
+		System.err.println("modifyJsb");
+		return false;
+	}
 
 }
