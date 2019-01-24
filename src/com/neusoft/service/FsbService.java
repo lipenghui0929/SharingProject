@@ -15,4 +15,6 @@ public interface FsbService {
 	public Boolean removeFsb(String id);
 	
 	public Boolean modifyFsb(Fsb fsb);
+	
+	public void saveFsbs(List<Fsb> fsbs);
 }

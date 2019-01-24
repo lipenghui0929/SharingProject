@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 
 public class JDBCAccessUtil {
-	private static String url = "jdbc:Access:///e:/mk/receive.mdb";
+	
 	private static  Properties p = new Properties();
 	private static ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
 	static{
@@ -22,9 +22,9 @@ public class JDBCAccessUtil {
    public static Connection getConnection(String url)throws Exception{
 	   Connection conn = tl.get();
 	   if(tl.get() == null){
-		   Class.forName(p.getProperty("access.driver"));
+		   Class.forName(p.getProperty("mysql.driver"));
 	   
-		   conn = DriverManager.getConnection(p.getProperty(url));
+		   conn = DriverManager.getConnection(p.getProperty("mysql.url"),p.getProperty("mysql.username"),p.getProperty("mysql.password"));
 		   tl.set(conn);
 		   return conn;
 	   }

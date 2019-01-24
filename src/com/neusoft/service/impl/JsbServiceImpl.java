@@ -3,6 +3,7 @@ package com.neusoft.service.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import com.neusoft.dao.JsbDao;
 import com.neusoft.dao.impl.JsbDaoImpl;
@@ -73,8 +74,21 @@ public class JsbServiceImpl implements JsbService {
 	}
 	@Override
 	public Boolean saveJsb(Jsb jsb) {
-		// TODO Auto-generated method stub
-		return null;
+		Boolean flag = true;
+		Connection conn = null;
+		try{
+			conn = JDBCAccessUtil.getConnection("receive.url");
+			conn.setAutoCommit(false);
+			jsbDao.insertJsb(jsb);
+			conn.commit();
+		}catch(Exception e){
+			flag = false;
+			try {conn.rollback();} catch (SQLException e1) {}
+			e.printStackTrace();
+		}finally {
+			JDBCAccessUtil.close(conn);
+		}
+		return flag;
 	}
 	@Override
 	public Boolean removeJsb(String id) {
@@ -95,9 +109,22 @@ public class JsbServiceImpl implements JsbService {
 		return flag;
 	}
 	@Override
-	public Boolean modifyJsb(Jsb fjsb) {
-		System.err.println("modifyJsb");
-		return false;
+	public Boolean modifyJsb(Jsb jsb) {
+		Boolean flag = true;
+		Connection conn = null;
+		try{
+			conn = JDBCAccessUtil.getConnection("receive.url");
+			conn.setAutoCommit(false);
+			jsbDao.updateJsb(jsb);
+			conn.commit();
+		}catch(Exception e){
+			flag = false;
+			try {conn.rollback();} catch (SQLException e1) {}
+			e.printStackTrace();
+		}finally {
+			JDBCAccessUtil.close(conn);
+		}
+		return flag;
 	}
 
 }

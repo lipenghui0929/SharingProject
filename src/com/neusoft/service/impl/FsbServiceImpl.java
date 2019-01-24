@@ -89,7 +89,7 @@ public class FsbServiceImpl implements FsbService{
 		}catch(Exception e){
 			flag = false;
 			try {conn.rollback();} catch (SQLException e1) {}
-			e.printStackTrace();
+			throw new RuntimeException("±£¥Ê ß∞‹",e);
 		}finally {
 			JDBCAccessUtil.close(conn);
 		}
@@ -133,6 +133,23 @@ public class FsbServiceImpl implements FsbService{
 			JDBCAccessUtil.close(conn);
 		}
 		return flag;
+		
+	}
+
+	@Override
+	public void saveFsbs(List<Fsb> fsbs) {
+		Connection conn = null;
+		try{
+			conn = JDBCAccessUtil.getConnection("send.url");
+			conn.setAutoCommit(false);
+			fsbDao.insertFsbs(fsbs);
+			conn.commit();
+		}catch(Exception e){
+			try {conn.rollback();} catch (SQLException e1) {}
+			throw new RuntimeException("±£¥Ê ß∞‹",e);
+		}finally {
+			JDBCAccessUtil.close(conn);
+		}
 		
 	}
 }

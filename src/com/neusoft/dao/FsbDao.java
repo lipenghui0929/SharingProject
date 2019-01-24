@@ -15,4 +15,6 @@ public interface FsbDao {
 	public void deleteFsb(String id);
 	
 	public void updateFsb(Fsb fsb);
+	
+	public void insertFsbs(List<Fsb> fsbs);
 }
