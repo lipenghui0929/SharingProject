@@ -3,6 +3,7 @@ package com.neusoft.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,6 +214,49 @@ public class FsbDaoImpl implements FsbDao {
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("É¾³ýÊ§°Ü",e);
+		}finally {
+			JDBCAccessUtil.close(pstm);
+		}
+		
+	}
+
+	@Override
+	public void insertFsbs(List<Fsb> fsbs) {
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		try{
+			String sql = "insert into fsb (id,mc,nc,gh,dkh,kch,imsi,bjh,sjh,lx,nr,cs,xx,sj,bz,zt) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			conn = JDBCAccessUtil.getConnection("send.url");
+			pstm = conn.prepareStatement(sql);
+			
+			for (Fsb fsb : fsbs) {
+				
+				pstm.setString(1, fsb.getId());
+				pstm.setNull(2, Types.VARCHAR);
+				pstm.setNull(3, Types.VARCHAR);
+				pstm.setNull(4, Types.VARCHAR);
+				pstm.setNull(5, Types.INTEGER);
+				pstm.setNull(6, Types.INTEGER);
+				pstm.setNull(7, Types.VARCHAR);
+				pstm.setString(8, fsb.getBjh());
+				pstm.setString(9, fsb.getSjh());
+				pstm.setNull(10, Types.VARCHAR);
+				pstm.setNull(11, Types.VARCHAR);
+				pstm.setNull(12, Types.INTEGER);
+				pstm.setString(13, fsb.getXx());
+				pstm.setNull(14, Types.TIMESTAMP);
+				pstm.setNull(15, Types.VARCHAR);
+				pstm.setNull(16, Types.VARCHAR);;
+				
+				pstm.addBatch();
+			}
+			
+			
+			pstm.executeBatch();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("±£´æÊ§°Ü",e);
 		}finally {
 			JDBCAccessUtil.close(pstm);
 		}

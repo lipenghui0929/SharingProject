@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -58,10 +61,10 @@ public class JToolBarFieldAction {
 				return;
 			}
 			
+			List<Fsb> fsbs = new ArrayList<Fsb>();
 			FileInputStream in = null;
 			InputStreamReader inReader = null;
 			BufferedReader read = null;
-			Fsb fsb = null;
 			try {
 				for (File f : arrfiles) {
 					in = new FileInputStream(f);
@@ -69,7 +72,8 @@ public class JToolBarFieldAction {
 					read = new BufferedReader(inReader);
 
 					while (true) {
-						fsb = new Fsb();
+						
+						Fsb fsb = new Fsb();
 						
 						String readLine = read.readLine();
 						if(readLine == null){
@@ -82,13 +86,18 @@ public class JToolBarFieldAction {
 						System.out.println(split[1]);
 						System.out.println(split[2]);
 						
+						
+						fsb.setId(UUID.randomUUID().toString());
 						fsb.setSjh(split[0].trim());
 						fsb.setXx(split[1].trim());
 						fsb.setBjh(split[2].trim());
 						
-						//保存数据
-						fsbService.saveFsb(fsb);
+						fsbs.add(fsb);
+						
 					}
+					
+					//保存数据
+					fsbService.saveFsbs(fsbs);
 				}
 				JOptionPane.showMessageDialog(null, "上传成功！", "提示",
 				JOptionPane.INFORMATION_MESSAGE);
@@ -97,7 +106,7 @@ public class JToolBarFieldAction {
 				JOptionPane.showMessageDialog(null, "上传失败！", "提示",
 				JOptionPane.ERROR_MESSAGE);
 				e1.printStackTrace();
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, "上传失败！", "提示",
 				JOptionPane.ERROR_MESSAGE);
 				e1.printStackTrace();

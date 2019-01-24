@@ -201,16 +201,25 @@ public class JSplitPaneUtil {
 	//点击按钮查询数据
 	public static JSplitPane createJSplitPaneByButton(JScrollPane leftJPanel,JSplitPane jSplitPane,Jsb jsb,JPanel queryPanel){
 		
-		JTable qdownTable = ViewSetingUtil.createTableView(new JsbTableModel(jsb));
+	    JTable downTable = ViewSetingUtil.createTableView(new JsbTableModel(jsb));
 		
-	    /*jSplitPane.setLeftComponent(leftJPanel);
-	    jSplitPane.setRightComponent(new JScrollPane(qdownTable));*/
+		int columnCount = downTable.getColumnCount();
+		//添加按钮
+		ButtonForTableAction bt = new ButtonForTableAction(downTable,"接收数据");
+		if(columnCount > 0){
+			TableColumn btnColumn = downTable.getColumnModel().getColumn(columnCount-1);
+			btnColumn.setCellRenderer(bt);
+			btnColumn.setCellEditor(bt);
+		}
+		
+		
+		
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
 		JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
 		jSplitPane3.setLeftComponent(jScrollPaneU);
 	
-		JScrollPane jScrollPaneD = new JScrollPane(qdownTable);
+		JScrollPane jScrollPaneD = new JScrollPane(downTable);
 		jSplitPane3.setRightComponent(jScrollPaneD);
 		
 
@@ -228,8 +237,16 @@ public class JSplitPaneUtil {
 	
 	public static JSplitPane createJSplitPaneByButtonForFsb(JScrollPane leftJPanel,JSplitPane jSplitPane,Fsb fsb,JPanel queryPanel){
 		
-		JTable qdownTable = ViewSetingUtil.createTableView(new FsbTableModel(fsb));
+		JTable downTable = ViewSetingUtil.createTableView(new FsbTableModel(fsb));
 		
+		int columnCount = downTable.getColumnCount();
+		//添加按钮
+		ButtonForTableAction bt = new ButtonForTableAction(downTable,"发送数据");
+		if(columnCount > 0){
+			TableColumn btnColumn = downTable.getColumnModel().getColumn(columnCount-1);
+			btnColumn.setCellRenderer(bt);
+			btnColumn.setCellEditor(bt);
+		}
 	    /*jSplitPane.setLeftComponent(leftJPanel);
 	    jSplitPane.setRightComponent(new JScrollPane(qdownTable));*/
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -237,7 +254,7 @@ public class JSplitPaneUtil {
 		JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
 		jSplitPane3.setLeftComponent(jScrollPaneU);
 	
-		JScrollPane jScrollPaneD = new JScrollPane(qdownTable);
+		JScrollPane jScrollPaneD = new JScrollPane(downTable);
 		jSplitPane3.setRightComponent(jScrollPaneD);
 		
 
