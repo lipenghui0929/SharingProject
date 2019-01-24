@@ -39,10 +39,10 @@ public class ColumndateUtil {
 	}
 	
 	public static Object[][] listJsbArray(Jsb jsb,int arrysSize){
-		//Object[][] datas = null;
+		Object[][] datas = null;
 		List<Jsb> list = jsbService.listJsbsByDateAndJh(jsb);
-		Object[][] datas = new Object[list.size()][arrysSize];
 		if(list.size() > 0){
+			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
 				datas[i][0] = new Boolean(false);
 				datas[i][1] = list.get(i).getId();
@@ -103,10 +103,11 @@ public class ColumndateUtil {
 	}
    
    public static Object[][] listFsbArray(Fsb fsb,int arrysSize){
-		//Object[][] datas = null;
+		
+	    Object[][] datas = null;
 		List<Fsb> list = fsbService.listFsbsByDateAndJh(fsb);
-		Object[][] datas = new Object[list.size()][arrysSize];
 		if(list.size() > 0){
+			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
 				datas[i][0] = new Boolean(false);
 				datas[i][1] = list.get(i).getId();
