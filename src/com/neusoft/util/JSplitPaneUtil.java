@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -19,21 +20,16 @@ import com.neusoft.base.FsbTableModel;
 import com.neusoft.base.JsbTableModel;
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
+import com.neusoft.ddmk.damin.Page;
 
 
 public class JSplitPaneUtil {
-	//序号、IMSI、手机号、状态(可用、不可用)、手机号、位置
-	static Object[] columnTitle = { "序号", "IMSI", "接收号", "状态(可用、不可用)", "本机号","内容"};
-/*	static Object[][] columnJsbdate = ColumndateUtil.listJsbArray(columnTitle.length);
-	
 
-	
-	static JTable upTable = ViewSetingUtil.createTableView(false, columndate,
-			columnTitle);
-	static JTable middleTable = ViewSetingUtil.createTableView(false, columndate, 
-			columnTitle);
-	static JTable downTable = ViewSetingUtil.createTableView(false, columnJsbdate,
-			columnTitle);*/
+	/**
+	 * 页码描述
+	 */
+	private static String pageDesContent = "当前为第currentPage页/共pageCont页";
+	private static JLabel pageDesc = new JLabel();
 	
 	/**
 	 * 根据叶子节点生成分割容器(点击案卷，文件，电子文件节点)
@@ -56,17 +52,26 @@ public class JSplitPaneUtil {
 		jSplitPane.setOneTouchExpandable(true);
 		return jSplitPane;
 	}*/
-	public static JSplitPane createJSplitPaneByLeafNode(DefaultMutableTreeNode node,JScrollPane leftJPanel,JSplitPane jSplitPane,JPanel queryPanel){
+	public static void getPageDesc(Page page){
+		String desContent = pageDesContent;
+		desContent = desContent.replaceAll("currentPage",Integer.toString(page.getPageNow()+1));
+		desContent = desContent.replaceAll("pageCont",Integer.toString(page.getPageCount()));
+		pageDesc.setText(desContent);
+	}
+	public static JSplitPane createJSplitPaneByLeafNode(DefaultMutableTreeNode node,JScrollPane leftJPanel,JSplitPane jSplitPane,JPanel queryPanel,JPanel pagingPanel,Page page){
 		
 		
 		Object object = node.getUserObject();
 		JTable downTable = null;
 		if ("接收数据".equals(object.toString())) {
-			downTable = ViewSetingUtil.createTableView(new JsbTableModel());
+			downTable = ViewSetingUtil.createTableView(new JsbTableModel(page));
 			
 		} else if ("发送数据".equals(object.toString())) {
-			downTable = ViewSetingUtil.createTableView(new FsbTableModel());
+			downTable = ViewSetingUtil.createTableView(new FsbTableModel(page));
 		}
+		
+		getPageDesc(page);
+		pagingPanel.add(pageDesc);
 		
 		int columnCount = downTable.getColumnCount();
 		//添加按钮
@@ -87,37 +92,17 @@ public class JSplitPaneUtil {
 			JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
 			//表格
 			JScrollPane jScrollPaneD = new JScrollPane(downTable);
-			//分页
-			JPanel pagingPanel = new JPanel();
-			
-			JButton buttonS = new JButton("首页");
-			buttonS.setActionCommand("首页"); 
-			pagingPanel.add(buttonS); 
-			
-			JButton button1 = new JButton("上一页");
-			buttonS.setActionCommand("上一页");
-			pagingPanel.add(button1); 
-			
-			JButton button2 = new JButton("下一页");
-			buttonS.setActionCommand("下一页");
-			pagingPanel.add(button2); 
-			
-			JButton buttonM = new JButton("末页");
-			buttonS.setActionCommand("末页");
-			pagingPanel.add(buttonM); 
-			
-			
 			
 			//二级且套
-			jSplitPane2.setLeftComponent(jScrollPaneU);
-			jSplitPane2.setRightComponent(jScrollPaneD);
-			
+			jSplitPane2.setLeftComponent(pagingPanel);
+			jSplitPane2.setRightComponent(queryPanel);
+			jSplitPane2.setDividerLocation(0.5);
 			
 			//三级且套
 			jSplitPane3.setLeftComponent(jSplitPane2);
-			jSplitPane3.setRightComponent(pagingPanel);
+			jSplitPane3.setRightComponent(jScrollPaneD);
 			
-			jSplitPane3.setDividerLocation(780);
+			jSplitPane3.setDividerLocation(95);
 		}
 
 		jSplitPane.setLeftComponent(leftJPanel);
@@ -232,9 +217,9 @@ public class JSplitPaneUtil {
 	}
 	
 	//点击按钮查询数据
-	public static JSplitPane createJSplitPaneByButton(JScrollPane leftJPanel,JSplitPane jSplitPane,Jsb jsb,JPanel queryPanel){
+	public static JSplitPane createJSplitPaneByButton(JScrollPane leftJPanel,JSplitPane jSplitPane,Jsb jsb,JPanel queryPanel,JPanel pagingPanel,Page page){
 		
-	    JTable downTable = ViewSetingUtil.createTableView(new JsbTableModel(jsb));
+	    JTable downTable = ViewSetingUtil.createTableView(new JsbTableModel(jsb,page));
 		
 		int columnCount = downTable.getColumnCount();
 		//添加按钮
@@ -244,16 +229,26 @@ public class JSplitPaneUtil {
 			btnColumn.setCellRenderer(bt);
 			btnColumn.setCellEditor(bt);
 		}
-		
-		
+		//描述
+		getPageDesc(page);
+		pagingPanel.add(pageDesc);
 		
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JSplitPane jSplitPane2 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
-		JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
-		jSplitPane3.setLeftComponent(jScrollPaneU);
-	
+		//表格
 		JScrollPane jScrollPaneD = new JScrollPane(downTable);
+		
+		//二级且套
+		jSplitPane2.setLeftComponent(pagingPanel);
+		jSplitPane2.setRightComponent(queryPanel);
+		jSplitPane2.setDividerLocation(0.5);
+		
+		//三级且套
+		jSplitPane3.setLeftComponent(jSplitPane2);
 		jSplitPane3.setRightComponent(jScrollPaneD);
+		
+		jSplitPane3.setDividerLocation(95);
 		
 
 		jSplitPane.setLeftComponent(leftJPanel);
@@ -268,9 +263,9 @@ public class JSplitPaneUtil {
 		return jSplitPane;
 	}
 	
-	public static JSplitPane createJSplitPaneByButtonForFsb(JScrollPane leftJPanel,JSplitPane jSplitPane,Fsb fsb,JPanel queryPanel){
+	public static JSplitPane createJSplitPaneByButtonForFsb(JScrollPane leftJPanel,JSplitPane jSplitPane,Fsb fsb,JPanel queryPanel,JPanel pagingPanel,Page page){
 		
-		JTable downTable = ViewSetingUtil.createTableView(new FsbTableModel(fsb));
+		JTable downTable = ViewSetingUtil.createTableView(new FsbTableModel(fsb,page));
 		
 		int columnCount = downTable.getColumnCount();
 		//添加按钮
@@ -280,15 +275,26 @@ public class JSplitPaneUtil {
 			btnColumn.setCellRenderer(bt);
 			btnColumn.setCellEditor(bt);
 		}
-	    /*jSplitPane.setLeftComponent(leftJPanel);
-	    jSplitPane.setRightComponent(new JScrollPane(qdownTable));*/
-		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
-		JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
-		jSplitPane3.setLeftComponent(jScrollPaneU);
-	
+		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JSplitPane jSplitPane2 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
+		
+		//描述
+		getPageDesc(page);
+		pagingPanel.add(pageDesc);
+		//表格
 		JScrollPane jScrollPaneD = new JScrollPane(downTable);
+		
+		//二级且套
+		jSplitPane2.setLeftComponent(pagingPanel);
+		jSplitPane2.setRightComponent(queryPanel);
+		jSplitPane2.setDividerLocation(0.5);
+		
+		//三级且套
+		jSplitPane3.setLeftComponent(jSplitPane2);
 		jSplitPane3.setRightComponent(jScrollPaneD);
+		
+		jSplitPane3.setDividerLocation(95);
 		
 
 		jSplitPane.setLeftComponent(leftJPanel);

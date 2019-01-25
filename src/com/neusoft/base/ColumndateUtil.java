@@ -2,10 +2,9 @@ package com.neusoft.base;
 
 import java.util.List;
 
-import javax.swing.JCheckBox;
-
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
+import com.neusoft.ddmk.damin.Page;
 import com.neusoft.service.FsbService;
 import com.neusoft.service.JsbService;
 import com.neusoft.service.impl.FsbServiceImpl;
@@ -16,9 +15,9 @@ public class ColumndateUtil {
 	private static JsbService jsbService = new JsbServiceImpl();
 	private static FsbService fsbService = new FsbServiceImpl();
 	
-	public static Object[][] listJsbArray(int arrysSize){
+	public static Object[][] listJsbArray(int arrysSize,Page page){
 		
-		List<Jsb> list = jsbService.listJsbs();
+		List<Jsb> list = jsbService.listJsbs(page);
 		Object[][] datas = new Object[list.size()][arrysSize];
 		if(list.size() > 0){
 			for (int i = 0; i < list.size(); i++) {
@@ -38,9 +37,9 @@ public class ColumndateUtil {
 		
 	}
 	
-	public static Object[][] listJsbArray(Jsb jsb,int arrysSize){
+	public static Object[][] listJsbArray(Jsb jsb,int arrysSize,Page page){
 		Object[][] datas = null;
-		List<Jsb> list = jsbService.listJsbsByDateAndJh(jsb);
+		List<Jsb> list = jsbService.listJsbsByDateAndJh(jsb,page);
 		if(list.size() > 0){
 			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
@@ -77,10 +76,15 @@ public class ColumndateUtil {
 		
 	}
    
-	
-   public static Object[][] listFsbArray(int arrysSize){
+   public static int getConutForJsb(Jsb jsb){
+	   
+		return jsbService.getConut(jsb);
 		
-		List<Fsb> list = fsbService.listFsbs();
+	}
+	
+   public static Object[][] listFsbArray(int arrysSize,Page page){
+		
+		List<Fsb> list = fsbService.listFsbs(page);
 		System.out.println(list.size());
 		Object[][] datas = null;
 		if( list.size() > 0){
@@ -102,10 +106,10 @@ public class ColumndateUtil {
 		
 	}
    
-   public static Object[][] listFsbArray(Fsb fsb,int arrysSize){
+   public static Object[][] listFsbArray(Fsb fsb,int arrysSize,Page page){
 		
 	    Object[][] datas = null;
-		List<Fsb> list = fsbService.listFsbsByDateAndJh(fsb);
+		List<Fsb> list = fsbService.listFsbsByDateAndJh(fsb,page);
 		if(list.size() > 0){
 			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
@@ -139,6 +143,12 @@ public class ColumndateUtil {
    public static Boolean modifyFsb(Fsb fsb){
 	   
 		return fsbService.modifyFsb(fsb);
+		
+	}
+   
+   public static int getConutForFsb(Fsb fsb){
+	   
+		return fsbService.getConut(fsb);
 		
 	}
 	

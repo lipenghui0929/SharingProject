@@ -29,10 +29,14 @@ public class JTableDefineTest extends JFrame{
 	public int getCurrentPage() { 
 		return currentPage; } 
 	public void setCurrentPage(int currentPage) 
-	{ this.currentPage = currentPage; } 
+	{ 
+		this.currentPage = currentPage;
+	} 
 	public int getPageSize() { return pageSize; }
+	
 	public void setPageSize(int pageSize) { 
-		this.pageSize = pageSize; } 
+		this.pageSize = pageSize;
+	} 
 	
 	
 	
@@ -88,14 +92,14 @@ public class JTableDefineTest extends JFrame{
 		list1=f.findUsers(currentPage, pageSize);
 		for(int row = 0;row<list1.size();row++) 
 			//获得数据 
-			{ 
+		{ 
 			Vector rowV = new Vector(); 
 			User user= (User) list1.get(row); 
 			rowV.add(user.getName()); 
 			//数据 
 			rowV.add(user.getPass()); 
 			dtm.addRow(rowV); 
-			} 
+		} 
 		// 
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 		//关闭表格列的自动调整功能。 
