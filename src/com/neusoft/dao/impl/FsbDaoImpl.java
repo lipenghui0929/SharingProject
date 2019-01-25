@@ -10,6 +10,7 @@ import java.util.List;
 import com.neusoft.dao.FsbDao;
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
+import com.neusoft.ddmk.damin.Page;
 import com.neusoft.util.JDBCAccessUtil;
 
 public class FsbDaoImpl implements FsbDao {
@@ -17,14 +18,17 @@ public class FsbDaoImpl implements FsbDao {
 	private String  SELECVT_SQL  = "select * from fsb ";
 
 	@Override
-	public List<Fsb> listFsbs() {
+	public List<Fsb> listFsbs(Page page) {
 		List<Fsb> fsbs = new ArrayList<Fsb>();
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
 			conn = JDBCAccessUtil.getConnection("send.url");
-			pstm = conn.prepareStatement(SELECVT_SQL);
+			pstm = conn.prepareStatement(SELECVT_SQL+" limit ?,?");
+			pstm.setInt(1, page.getPageNow()*page.getPageSize());
+			pstm.setInt(2, page.getPageSize());
+			
 			rs = pstm.executeQuery();
 			while (rs.next()) {
 				Fsb fsb=new Fsb();
@@ -57,34 +61,51 @@ public class FsbDaoImpl implements FsbDao {
 	}
 
 	@Override
-	public List<Fsb> listFsbsByDateAndJh(Fsb queryfsb, String queryCondition) {
+	public List<Fsb> listFsbsByDateAndJh(Fsb queryfsb,String queryCondition,Page page) {
 		List<Fsb> fsbs = new ArrayList<Fsb>();
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		try {
 			conn = JDBCAccessUtil.getConnection("send.url");
-			pstm = conn.prepareStatement(SELECVT_SQL+queryCondition);
+			pstm = conn.prepareStatement(SELECVT_SQL+queryCondition+" limit ?,?");
 			
 			if(queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
 				pstm.setString(1, queryfsb.getSjh());
+				pstm.setInt(2, page.getPageNow()*page.getPageSize());
+				pstm.setInt(3, page.getPageSize());
 			}else if(!queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
 				pstm.setString(1, queryfsb.getBjh());
+				pstm.setInt(2, page.getPageNow()*page.getPageSize());
+				pstm.setInt(3, page.getPageSize());
 			}else if(!queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
 				pstm.setDate(1, new java.sql.Date(queryfsb.getSj().getTime()));
+				pstm.setInt(2, page.getPageNow()*page.getPageSize());
+				pstm.setInt(3, page.getPageSize());
 			}else if(queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
 				pstm.setString(1, queryfsb.getSjh());
 				pstm.setString(2, queryfsb.getBjh());
+				pstm.setInt(3, page.getPageNow()*page.getPageSize());
+				pstm.setInt(4, page.getPageSize());
 			}else if(queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
 				pstm.setString(1, queryfsb.getSjh());
 				pstm.setDate(2, new java.sql.Date(queryfsb.getSj().getTime()));
+				pstm.setInt(3, page.getPageNow()*page.getPageSize());
+				pstm.setInt(4, page.getPageSize());
 			}else if(!queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
 				pstm.setString(1, queryfsb.getBjh());
 				pstm.setDate(2, new java.sql.Date(queryfsb.getSj().getTime()));
+				pstm.setInt(3, page.getPageNow()*page.getPageSize());
+				pstm.setInt(4, page.getPageSize());
 			}else if(queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
 				pstm.setString(1, queryfsb.getSjh());
 				pstm.setString(2, queryfsb.getBjh());
 				pstm.setDate(3, new java.sql.Date(queryfsb.getSj().getTime()));
+				pstm.setInt(4, page.getPageNow()*page.getPageSize());
+				pstm.setInt(5, page.getPageSize());
+			}else{
+				pstm.setInt(1, page.getPageNow()*page.getPageSize());
+				pstm.setInt(2, page.getPageSize());
 			}
 			
 			rs = pstm.executeQuery();
@@ -261,6 +282,52 @@ public class FsbDaoImpl implements FsbDao {
 			JDBCAccessUtil.close(pstm);
 		}
 		
+	}
+
+	@Override
+	public int getConut(Fsb queryfsb,String queryCondition) {
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int count = 0;
+		try{
+			
+			String sql = "select count(*) from fsb "+queryCondition;
+			conn = JDBCAccessUtil.getConnection("");
+			pstm = conn.prepareStatement(sql);
+			
+			if(queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
+				pstm.setString(1, queryfsb.getSjh());
+			}else if(!queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
+				pstm.setString(1, queryfsb.getBjh());
+			}else if(!queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
+				pstm.setDate(1, new java.sql.Date(queryfsb.getSj().getTime()));
+			}else if(queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && !queryfsb.isQueryforSj()){
+				pstm.setString(1, queryfsb.getSjh());
+				pstm.setString(2, queryfsb.getBjh());
+			}else if(queryfsb.isQueryforSjh() && !queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
+				pstm.setString(1, queryfsb.getSjh());
+				pstm.setDate(2, new java.sql.Date(queryfsb.getSj().getTime()));
+			}else if(!queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
+				pstm.setString(1, queryfsb.getBjh());
+				pstm.setDate(2, new java.sql.Date(queryfsb.getSj().getTime()));
+			}else if(queryfsb.isQueryforSjh() && queryfsb.isQueryforBjh() && queryfsb.isQueryforSj()){
+				pstm.setString(1, queryfsb.getSjh());
+				pstm.setString(2, queryfsb.getBjh());
+				pstm.setDate(3, new java.sql.Date(queryfsb.getSj().getTime()));
+			}
+			
+			rs = pstm.executeQuery();
+			rs.next();
+			count = rs.getInt(1);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("查询条数出错",e);
+		}finally {
+			JDBCAccessUtil.close(rs,pstm);
+		}
+		return count;
 	}
 
 }

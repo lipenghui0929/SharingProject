@@ -3,6 +3,7 @@ package com.neusoft.base;
 import javax.swing.table.AbstractTableModel;
 
 import com.neusoft.ddmk.damin.Jsb;
+import com.neusoft.ddmk.damin.Page;
 
 public class JsbTableModel extends AbstractTableModel {
 
@@ -18,12 +19,12 @@ public class JsbTableModel extends AbstractTableModel {
 			Object.class, Object.class, Object.class };*/
    
 
-	public JsbTableModel() {
-		data = ColumndateUtil.listJsbArray(head.length);
+	public JsbTableModel(Page page) {
+		data = ColumndateUtil.listJsbArray(head.length,page);
 	}
 	
-	public JsbTableModel(Jsb jsb) {
-		data = ColumndateUtil.listJsbArray(jsb,head.length);
+	public JsbTableModel(Jsb jsb,Page page) {
+		data = ColumndateUtil.listJsbArray(jsb,head.length,page);
 	}
 
 	// 获得表格的列数

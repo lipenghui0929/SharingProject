@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.neusoft.dao.JsbDao;
 import com.neusoft.dao.impl.JsbDaoImpl;
 import com.neusoft.ddmk.damin.Jsb;
+import com.neusoft.ddmk.damin.Page;
 import com.neusoft.service.JsbService;
 import com.neusoft.util.JDBCAccessUtil;
 
@@ -15,13 +16,13 @@ public class JsbServiceImpl implements JsbService {
 
 	private JsbDao jsbDao = new JsbDaoImpl();
 	@Override
-	public List<Jsb> listJsbs() {
+	public List<Jsb> listJsbs(Page page) {
 		Connection conn = null;
 		List<Jsb> jsbs = null;
 		try{
 			conn = JDBCAccessUtil.getConnection("receive.url");
 			conn.setAutoCommit(false);
-			jsbs = jsbDao.listJsbs();
+			jsbs = jsbDao.listJsbs(page);
 			conn.commit();
 			return jsbs;
 		}catch(Exception e){
@@ -33,13 +34,13 @@ public class JsbServiceImpl implements JsbService {
 		return jsbs;
 	}
 	@Override
-	public List<Jsb> listJsbsByDateAndJh(Jsb jsb) {
+	public List<Jsb> listJsbsByDateAndJh(Jsb jsb,Page page) {
 		Connection conn = null;
 		List<Jsb> jsbs = null;
 		try{
 			conn = JDBCAccessUtil.getConnection("receive.url");
 			conn.setAutoCommit(false);
-			jsbs = jsbDao.listJsbsByDateAndJh(jsb, getQueryCondition(jsb));
+			jsbs = jsbDao.listJsbsByDateAndJh(jsb, getQueryCondition(jsb),page);
 			conn.commit();
 			return jsbs;
 		}catch(Exception e){
@@ -125,6 +126,23 @@ public class JsbServiceImpl implements JsbService {
 			JDBCAccessUtil.close(conn);
 		}
 		return flag;
+	}
+	@Override
+	public int getConut(Jsb Jsb) {
+		Connection conn = null;
+		int count = 0;
+		try{
+			conn = JDBCAccessUtil.getConnection("send.url");
+			conn.setAutoCommit(false);
+			count = jsbDao.getConut(Jsb, getQueryCondition(Jsb));
+			conn.commit();
+		}catch(Exception e){
+			try {conn.rollback();} catch (SQLException e1) {}
+			throw new RuntimeException("查询条数出错",e);
+		}finally {
+			JDBCAccessUtil.close(conn);
+		}
+		return count;
 	}
 
 }
