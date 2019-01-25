@@ -2,6 +2,7 @@ package com.neusoft.util;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -57,6 +58,7 @@ public class JSplitPaneUtil {
 	}*/
 	public static JSplitPane createJSplitPaneByLeafNode(DefaultMutableTreeNode node,JScrollPane leftJPanel,JSplitPane jSplitPane,JPanel queryPanel){
 		
+		
 		Object object = node.getUserObject();
 		JTable downTable = null;
 		if ("接收数据".equals(object.toString())) {
@@ -75,16 +77,47 @@ public class JSplitPaneUtil {
 			btnColumn.setCellEditor(bt);
 		}
 		
-		
+		//JSplitPane.VERTICAL_SPLIT
 		JSplitPane jSplitPane3 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JSplitPane jSplitPane2 = createLandscapeJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
 		int childCount = node.getChildCount();
 		if(childCount == 0 && node.isLeaf()){
+			//查询
 			JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
-			jSplitPane3.setLeftComponent(jScrollPaneU);
-		
+			//表格
 			JScrollPane jScrollPaneD = new JScrollPane(downTable);
-			jSplitPane3.setRightComponent(jScrollPaneD);
+			//分页
+			JPanel pagingPanel = new JPanel();
+			
+			JButton buttonS = new JButton("首页");
+			buttonS.setActionCommand("首页"); 
+			pagingPanel.add(buttonS); 
+			
+			JButton button1 = new JButton("上一页");
+			buttonS.setActionCommand("上一页");
+			pagingPanel.add(button1); 
+			
+			JButton button2 = new JButton("下一页");
+			buttonS.setActionCommand("下一页");
+			pagingPanel.add(button2); 
+			
+			JButton buttonM = new JButton("末页");
+			buttonS.setActionCommand("末页");
+			pagingPanel.add(buttonM); 
+			
+			
+			
+			//二级且套
+			jSplitPane2.setLeftComponent(jScrollPaneU);
+			jSplitPane2.setRightComponent(jScrollPaneD);
+			
+			
+			//三级且套
+			jSplitPane3.setLeftComponent(jSplitPane2);
+			jSplitPane3.setRightComponent(pagingPanel);
+			
+			jSplitPane3.setDividerLocation(780);
 		}
 
 		jSplitPane.setLeftComponent(leftJPanel);
