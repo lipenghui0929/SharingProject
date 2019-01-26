@@ -75,8 +75,8 @@ public class JsbTableModel extends AbstractTableModel {
 	}
 	
 	 public Class getColumnClass(int c) {
-		// System.out.println("getColumnClass"+c);
-		 if(data != null && ((c == 0) || (c == head.length -1))){
+	
+		 if(data != null && (getRowCount() != 0)){
 			 return getValueAt(0, c).getClass();
 		 }
 		 return null;

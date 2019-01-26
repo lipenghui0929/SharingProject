@@ -134,22 +134,21 @@ public class JsbDaoImpl implements JsbDao{
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		try{
-			String sql = "insert into jsb  values (?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "insert into jsb (mc,nc,gh,dkh,kch,imsi,sjh,bjh,nr,sj,bz)  values (?,?,?,?,?,?,?,?,?,?,?)";
 			conn = JDBCAccessUtil.getConnection("receive.url");
 			pstm = conn.prepareStatement(sql);
 			
-			pstm.setInt(1, jsb.getId());
-			pstm.setString(2, jsb.getMc());
-			pstm.setString(3, jsb.getNc());
-			pstm.setString(4, jsb.getGh());
-			pstm.setInt(5, jsb.getDkh());
-			pstm.setInt(6, jsb.getKch());
-			pstm.setString(7, jsb.getImsi());
-			pstm.setString(8, jsb.getSjh());
-			pstm.setString(9, jsb.getBjh());
-			pstm.setString(10, jsb.getNr());
-			pstm.setDate(11, new java.sql.Date(jsb.getSj().getTime()));
-			pstm.setString(12, jsb.getBz());
+			pstm.setString(1, jsb.getMc());
+			pstm.setString(2, jsb.getNc());
+			pstm.setString(3, jsb.getGh());
+			pstm.setInt(4, jsb.getDkh());
+			pstm.setInt(5, jsb.getKch());
+			pstm.setString(6, jsb.getImsi());
+			pstm.setString(7, jsb.getSjh());
+			pstm.setString(8, jsb.getBjh());
+			pstm.setString(9, jsb.getNr());
+			pstm.setDate(10, new java.sql.Date(jsb.getSj().getTime()));
+			pstm.setString(11, jsb.getBz());
 			
 			pstm.executeUpdate();
 			//pstm.executeBatch();
@@ -164,7 +163,7 @@ public class JsbDaoImpl implements JsbDao{
 	}
 
 	@Override
-	public void deleteJsb(String id) {
+	public void deleteJsb(Integer id) {
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		try{
@@ -172,7 +171,7 @@ public class JsbDaoImpl implements JsbDao{
 			conn = JDBCAccessUtil.getConnection("receive.url");
 			pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(1, id);	
+			pstm.setInt(1, id);	
 			pstm.executeUpdate();
 			
 		}catch(Exception e){

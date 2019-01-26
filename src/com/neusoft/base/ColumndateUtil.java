@@ -18,8 +18,9 @@ public class ColumndateUtil {
 	public static Object[][] listJsbArray(int arrysSize,Page page){
 		
 		List<Jsb> list = jsbService.listJsbs(page);
-		Object[][] datas = new Object[list.size()][arrysSize];
+		Object[][] datas = null;
 		if(list.size() > 0){
+			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
 				datas[i][0] = new Boolean(false);
 				datas[i][1] = list.get(i).getId();
@@ -64,7 +65,7 @@ public class ColumndateUtil {
 		
 	}
    
-   public static Boolean removeJsb(String id){
+   public static Boolean removeJsb(Integer id){
 	   
 		return jsbService.removeJsb(id);
 		
