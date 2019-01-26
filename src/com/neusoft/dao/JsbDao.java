@@ -13,7 +13,7 @@ public interface JsbDao {
 	
     public void insertJsb(Jsb jsb);
 	
-	public void deleteJsb(String id);
+	public void deleteJsb(Integer id);
 	
 	public void updateJsb(Jsb jsb);
 	

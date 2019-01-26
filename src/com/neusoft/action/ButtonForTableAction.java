@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -94,11 +95,24 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
-				
+				//获取行数
 				int i = table.getSelectedRow();
-				String id = (String)model.getValueAt(i, 1);
-				Boolean removeFsb = ColumndateUtil.removeJsb(id);
-				System.out.println("deleteButton:"+id);
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				if(select){
+					Integer id = (Integer)model.getValueAt(i, 1);
+					Boolean removeJsb = ColumndateUtil.removeJsb(id);
+					if(removeJsb){
+						JOptionPane.showMessageDialog(null, "删除成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "删除失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+					System.out.println("deleteButtonJsb:"+id);
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println("Booleanelect:"+select);
+				
 			}
 		});
 	}
@@ -133,9 +147,23 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 				// TODO Auto-generated method stub
 				
 				int i = table.getSelectedRow();
-				String id = (String)model.getValueAt(i, 1);
-				Boolean removeFsb = ColumndateUtil.removeFsb(id);
-				System.out.println("deleteButton:"+id);
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				
+				if(select){
+					String id = (String)model.getValueAt(i, 1);
+					Boolean removeFsb = ColumndateUtil.removeFsb(id);
+					if(removeFsb){
+						JOptionPane.showMessageDialog(null, "删除成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "删除失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+					System.out.println("deleteButtonFsb:"+id);
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println("Booleanelect:"+select);
+				
 			}
 		});
 	}

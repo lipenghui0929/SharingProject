@@ -86,13 +86,14 @@ public class JsbServiceImpl implements JsbService {
 			flag = false;
 			try {conn.rollback();} catch (SQLException e1) {}
 			e.printStackTrace();
+			throw new RuntimeException("±£¥Ê ß∞‹",e);
 		}finally {
 			JDBCAccessUtil.close(conn);
 		}
 		return flag;
 	}
 	@Override
-	public Boolean removeJsb(String id) {
+	public Boolean removeJsb(Integer id) {
 		Boolean flag = true;
 		Connection conn = null;
 		try{
