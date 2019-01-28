@@ -17,6 +17,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.neusoft.action.ButtonForTableAction;
 import com.neusoft.base.ColumndateUtil;
 import com.neusoft.base.FsbTableModel;
+import com.neusoft.base.ImsiTableModel;
 import com.neusoft.base.JsbTableModel;
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Jsb;
@@ -68,6 +69,8 @@ public class JSplitPaneUtil {
 			
 		} else if ("发送数据".equals(object.toString())) {
 			downTable = ViewSetingUtil.createTableView(new FsbTableModel(page));
+		}else if ("imsi".equals(object.toString())) {
+			downTable = ViewSetingUtil.createTableView(new ImsiTableModel(page));
 		}
 		
 		getPageDesc(page);
@@ -88,13 +91,13 @@ public class JSplitPaneUtil {
 		
 		int childCount = node.getChildCount();
 		if(childCount == 0 && node.isLeaf()){
-			//查询
-			JScrollPane jScrollPaneU = new JScrollPane(queryPanel);
+			
 			//表格
 			JScrollPane jScrollPaneD = new JScrollPane(downTable);
 			
 			//二级且套
 			jSplitPane2.setLeftComponent(pagingPanel);
+			//查询
 			jSplitPane2.setRightComponent(queryPanel);
 			jSplitPane2.setDividerLocation(0.5);
 			

@@ -199,6 +199,8 @@ public class VolumeInputFrame extends JFrame {
 				saveJsbforClien(componentLength,components,flag);
 			}else if("发送数据".equals(levelsName)){
 				saveFsbforClien(componentLength,components,flag);
+			}else if("imsi".equals(levelsName)){
+				saveImsiforClien(componentLength,components,flag);
 			}
 
 		} catch (Exception e) {
@@ -302,6 +304,57 @@ public class VolumeInputFrame extends JFrame {
 		flag = ColumndateUtil.saveJsb(jsb);
 	}
 
+	public void saveImsiforClien(int length,Component[] components,boolean flag) throws Exception{
+		Fsb fsb = new Fsb();
+		for (int j = 0; j < length; j++) {
+			if (components[j] instanceof JTextField) {
+				// 得到每个文本框的名字
+	
+				JTextField jtextField = (JTextField) components[j];
+				String jTextFieldName = jtextField.getName();
+				String textField = jtextField.getText();
+				System.out.println("jTextFieldName = "  +  jTextFieldName);
+				System.out.println("字段= " + textField);
+				
+				if("名称".equals(jTextFieldName)){
+					fsb.setMc(textField);
+				}else if("昵称".equals(jTextFieldName)){
+					fsb.setNc(textField);
+				}else if("gh".equals(jTextFieldName)){
+					fsb.setGh(textField);
+				}else if("端口号".equals(jTextFieldName)){
+					fsb.setDkh(Integer.valueOf(textField));
+				}else if("卡池号".equals(jTextFieldName)){
+					fsb.setKch(Integer.valueOf(textField));
+				}else if("串码".equals(jTextFieldName)){
+					fsb.setImsi(textField);
+				}else if("本机号".equals(jTextFieldName)){
+					fsb.setBjh(textField);
+				}else if("号码".equals(jTextFieldName)){
+					fsb.setSjh(textField);
+				}else if("类型".equals(jTextFieldName)){
+					fsb.setLx(textField);
+				}else if("内容".equals(jTextFieldName)){
+					fsb.setNr(textField);
+				}else if("次数".equals(jTextFieldName)){
+					fsb.setCs(Integer.valueOf(textField));
+				}else if("休息".equals(jTextFieldName)){
+					fsb.setXx(textField);
+				}else if("时间".equals(jTextFieldName)){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = sdf.parse(textField);
+					fsb.setSj(date);
+				}else if("备注".equals(jTextFieldName)){
+					fsb.setBz(textField);
+				}else if("状态".equals(jTextFieldName)){
+					fsb.setZt(textField);
+				}
+				
+		    }	
+		}
+		flag = ColumndateUtil.saveFsb(fsb);
+	}
+	
 	/**
 	 * 数据校验
 	 * 

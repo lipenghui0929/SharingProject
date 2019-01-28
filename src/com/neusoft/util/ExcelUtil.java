@@ -42,7 +42,7 @@ public class ExcelUtil {
 	 * @param file
 	 *            接收数据表格
 	 * @param electronicalFile
-	 *            电子文件表格
+	 *            imsi表格
 	 * @return
 	 */
 	public static boolean exportExcel(String excelName, String exportPath,
@@ -72,7 +72,7 @@ public class ExcelUtil {
 				setExcelRowData(fileSheet, tableModel);
 			}
 			if (electronicalFile != null) {
-				HSSFSheet electronicalFileSheet = workbook.createSheet("电子文件");
+				HSSFSheet electronicalFileSheet = workbook.createSheet("imsi");
 				electronicalFileSheet.setDefaultColumnWidth(15);
 				// 产生表格标题行
 				HSSFRow row = createRow(electronicalFileSheet, columnTitle);
@@ -360,8 +360,8 @@ public class ExcelUtil {
 							    HSSFCell cell3 = row.createCell(index);
 								cell3.setCellValue(key);
 							}*/
-						}else if ("电子文件".equals(sheetName)) {
-							HSSFSheet volumeSheet = workbook.createSheet("电子文件");
+						}else if ("imsi".equals(sheetName)) {
+							HSSFSheet volumeSheet = workbook.createSheet("imsi");
 							volumeSheet.setDefaultColumnWidth(15);
 							Map<String, String> fields = getFieldsByExcelPath(pathString, sheetName);
 							HSSFRow row = volumeSheet.createRow(0);
@@ -370,7 +370,7 @@ public class ExcelUtil {
 							cell.setCellValue("fileId");
 							index++;
 							HSSFCell cell2 = row.createCell(index);
-							cell2.setCellValue("electronicalFileId");
+							//cell2.setCellValue("electronicalFileId");
 							for (Entry<String, String> entry: fields.entrySet()) {
 								index++;
 							    String key = entry.getKey();
