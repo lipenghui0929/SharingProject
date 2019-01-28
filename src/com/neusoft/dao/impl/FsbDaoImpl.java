@@ -213,28 +213,103 @@ public class FsbDaoImpl implements FsbDao {
 			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(1, fsb.getMc());
-			pstm.setString(2, fsb.getNc());
-			pstm.setString(3, fsb.getGh());
-			pstm.setInt(4, fsb.getDkh());
-			pstm.setInt(5, fsb.getKch());
-			pstm.setString(6, fsb.getImsi());
-			pstm.setString(7, fsb.getBjh());
-			pstm.setString(8, fsb.getSjh());
-			pstm.setString(9, fsb.getLx());
-			pstm.setString(10, fsb.getNr());
-			pstm.setInt(11, fsb.getCs());
-			pstm.setString(12, fsb.getXx());
-			pstm.setDate(13, new java.sql.Date(fsb.getSj().getTime()));
-			pstm.setString(14, fsb.getBz());
-			pstm.setString(15, fsb.getZt());
+			if(!"".equals(fsb.getMc()) && fsb.getMc() != null ){
+				pstm.setString(1, fsb.getMc());
+			}else{
+				pstm.setNull(1, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getNc()) && fsb.getNc() != null ){
+				pstm.setString(2, fsb.getNc());
+			}else{
+				pstm.setNull(2, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getGh()) && fsb.getGh() != null ){
+				pstm.setString(3, fsb.getGh());
+			}else{
+				pstm.setNull(3, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getDkh()) && fsb.getDkh() != null ){
+				pstm.setInt(4, fsb.getDkh());
+			}else{
+				pstm.setNull(4, Types.INTEGER);
+			}
+			
+			if(!"".equals(fsb.getKch()) && fsb.getKch() != null ){
+				pstm.setInt(5, fsb.getKch());
+			}else{
+				pstm.setNull(5, Types.INTEGER);
+			}
+			
+			if(!"".equals(fsb.getImsi()) && fsb.getImsi() != null ){
+				pstm.setString(6, fsb.getImsi());
+			}else{
+				pstm.setNull(6, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getBjh()) && fsb.getBjh() != null ){
+				pstm.setString(7, fsb.getBjh());
+			}else{
+				pstm.setNull(7, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getSjh()) && fsb.getSjh() != null ){
+				pstm.setString(8, fsb.getSjh());
+			}else{
+				pstm.setNull(8, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getLx()) && fsb.getLx() != null ){
+				pstm.setString(9, fsb.getLx());
+			}else{
+				pstm.setNull(9, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getNr()) && fsb.getNr() != null ){
+				pstm.setString(10, fsb.getNr());
+			}else{
+				pstm.setNull(10, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getCs()) && fsb.getCs() != null ){
+				pstm.setInt(11, fsb.getCs());
+			}else{
+				pstm.setNull(11, Types.INTEGER);
+			}
+			
+			if(!"".equals(fsb.getXx()) && fsb.getXx() != null ){
+				pstm.setString(12, fsb.getXx());
+			}else{
+				pstm.setNull(12, Types.VARCHAR);
+			}
+			
+			if( fsb.getSj() != null ){
+				pstm.setDate(13, new java.sql.Date(fsb.getSj().getTime()));
+			}else{
+				pstm.setNull(13, Types.TIMESTAMP);
+			}
+			
+			if(!"".equals(fsb.getBz()) && fsb.getBz() != null ){
+				pstm.setString(14, fsb.getBz());
+			}else{
+				pstm.setNull(14, Types.VARCHAR);
+			}
+			
+			if(!"".equals(fsb.getZt()) && fsb.getZt() != null ){
+				pstm.setString(15, fsb.getZt());
+			}else{
+				pstm.setNull(15, Types.VARCHAR);
+			}
+			
 			pstm.setString(16, fsb.getId());
 			
 			pstm.executeUpdate();
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			throw new RuntimeException("É¾³ýÊ§°Ü",e);
+			throw new RuntimeException("ÐÞ¸ÄÊ§°Ü",e);
 		}finally {
 			JDBCAccessUtil.close(pstm);
 		}
