@@ -74,19 +74,41 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
-				Jsb jsb = new Jsb();
-				int i = table.getSelectedRow();
-				//获取列数
-				int columnCount = model.getColumnCount(); 
-				/*for (int j = 0; j < columnCount; j++) {
-					String id = (String)model.getValueAt(i, j);
-				}*/
 				
-				/*Boolean removeFsb = fsbService.removeFsb(id);
-				System.out.println("deleteButton:"+id);*/
-				//JOptionPane.showMessageDialog(null, s);
-				//调用修改
-				Boolean modifyFsb = ColumndateUtil.modifyJsb(jsb);
+				int i = table.getSelectedRow();
+				
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				
+				if(select){
+					
+					Jsb jsb = new Jsb();
+					
+					Integer id = (Integer)model.getValueAt(i, 1);
+					jsb.setId(id);
+					String imsi = (String)model.getValueAt(i, 2);
+					jsb.setImsi(imsi);
+					String sjh = (String)model.getValueAt(i, 3);
+					jsb.setSjh(sjh);
+					String mc = (String)model.getValueAt(i, 4);
+					jsb.setMc(mc);
+					String bjh = (String)model.getValueAt(i, 5);
+					jsb.setBjh(bjh);
+					String nr = (String)model.getValueAt(i, 6);
+					jsb.setNr(nr);
+					
+					//调用修改
+					Boolean modifyJsb = ColumndateUtil.modifyJsb(jsb);
+					
+					if(modifyJsb){
+						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "修改失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		
@@ -124,19 +146,38 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
-				Fsb fsb = new Fsb();
 				int i = table.getSelectedRow();
-				//获取列数
-				int columnCount = model.getColumnCount(); 
-				for (int j = 0; j < columnCount; j++) {
-					String id = (String)model.getValueAt(i, j);
+
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				if(select){
+					Fsb fsb = new Fsb();
+					
+					String id = (String)model.getValueAt(i, 1);
+					fsb.setId(id);
+					String imsi = (String)model.getValueAt(i, 2);
+					fsb.setImsi(imsi);
+					String sjh = (String)model.getValueAt(i, 3);
+					fsb.setSjh(sjh);
+					String mc = (String)model.getValueAt(i, 4);
+					fsb.setMc(mc);
+					String bjh = (String)model.getValueAt(i, 5);
+					fsb.setBjh(bjh);
+					String nr = (String)model.getValueAt(i, 6);
+					fsb.setNr(nr);
+					
+					Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+					
+					if(modifyFsb){
+						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "修改失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
 				}
 				
-				/*Boolean removeFsb = fsbService.removeFsb(id);
-				System.out.println("deleteButton:"+id);*/
-				//JOptionPane.showMessageDialog(null, s);
-				//调用修改
-				Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+				
 			}
 		});
 		

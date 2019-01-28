@@ -15,8 +15,8 @@ public class FsbTableModel extends AbstractTableModel {
 	Object[][] data = null;
 
 	// 定义表格每一列的数据类型
-	/*Class[] typeArray = { Boolean.class, Object.class, Object.class,
-			Object.class, Object.class, Object.class };*/
+	Class[] typeArray = { Boolean.class, String.class, String.class,
+			String.class, String.class, String.class,String.class,Object.class };
 
 
 	public FsbTableModel(Page page) {
@@ -76,10 +76,13 @@ public class FsbTableModel extends AbstractTableModel {
 	
 	 public Class getColumnClass(int c) {
 		 //System.out.println("getColumnClass"+c);
-		 if(data != null && (getRowCount() != 0)){
-			 return getValueAt(0, c).getClass();
-		 }
-		 return null;
+		/* if(data != null && (getRowCount() != 0)){
+			 Object valueAt = getValueAt(0, c);
+			 if(valueAt != null){
+				 return valueAt.getClass();
+			 }
+		 }*/
+		 return typeArray[c];
 	 }
 
 }
