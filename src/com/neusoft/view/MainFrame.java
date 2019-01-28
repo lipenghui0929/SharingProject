@@ -57,6 +57,7 @@ public class MainFrame extends JFrame {
 	
 	private Page pageFsb = new Page();
 	private Page pageJsb = new Page();
+	private Page pageImsi = new Page();
 	
 	public JTree tree;
 	private JFrame mainFrame = this;
@@ -75,6 +76,7 @@ public class MainFrame extends JFrame {
 	//查询模块
 	JPanel queryPanelForJsb = new JPanel();
 	JPanel queryPanelForFsb = new JPanel();
+	JPanel queryPanelForImsi = new JPanel();
 	//分页
 	JPanel pagingPanel = new JPanel();
     
@@ -134,7 +136,7 @@ public class MainFrame extends JFrame {
 		// addBtn.addActionListener(new ButtonClickAction(frame));
 		addBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				Object[] possibleValues = {"接收数据", "发送数据" };
+				Object[] possibleValues = {"发送数据", "imsi" };
 				Object selectedValue =JOptionPane.showInputDialog(null, "请选择新增数据模块：","选择角色：", JOptionPane.INFORMATION_MESSAGE, null, possibleValues,possibleValues[0]);
 				if(selectedValue != null){
 					System.out.println("selectedValue"+selectedValue);
@@ -232,6 +234,7 @@ public class MainFrame extends JFrame {
 		addPagePanel();
 		addQueryPanelForJsb();
 		addQueryPanelForFsb();
+		addQueryPanelForImsi();
 		new TimeGo().start();// 启动线程
 	}
 
@@ -292,6 +295,7 @@ public class MainFrame extends JFrame {
 				if (node == null)
 					return;
 				Object object = node.getUserObject();
+				System.out.println(object.toString());
 				pageFsb.setPageNow(0);
 				if ("接收数据".equals(object.toString())) {
 					//初始化页数
@@ -305,7 +309,14 @@ public class MainFrame extends JFrame {
 					pageFsb.setTatolCount(ColumndateUtil.getConutForFsb(capsulationFsb()));
 					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForFsb,pagingPanel,pageFsb));
 					setButtonIsEnabled(buttons, true);
-				} else {
+				} else if ("imsi".equals(object.toString())) {
+					//初始化页数
+					pageImsi.setPageNow(0);
+					pageImsi.setTatolCount(ColumndateUtil.getConutForImsi());
+					
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
+					setButtonIsEnabled(buttons, true);
+				}  else {
 					jSplitPane.setLeftComponent(leftJPanel);
 					jSplitPane.setRightComponent(rightJPanel);
 					// 设置中间分割条大小
@@ -390,6 +401,11 @@ public class MainFrame extends JFrame {
 		jToolBarFieldAction.UpLoadFile(queryPanelForFsb);
 	}
 	
+	public void addQueryPanelForImsi(){
+		
+		jToolBarFieldAction.UpLoadFile(queryPanelForImsi);
+	}
+	
 	//分页面板
 	public void addPagePanel(){
 		
@@ -417,6 +433,9 @@ public class MainFrame extends JFrame {
 				} else if ("发送数据".equals(object.toString())) {
 					pageFsb.setPageNow(0);
 					add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
+				}else if ("imsi".equals(object.toString())) {
+					pageImsi.setPageNow(0);
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -442,6 +461,13 @@ public class MainFrame extends JFrame {
 					} 
 					pageFsb.setPageNow(pageFsb.getPageNow()-1);
 					add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
+				}
+				else if ("imsi".equals(object.toString())) {
+					if(pageImsi.getPageNow()<=0){ 
+						pageImsi.setPageNow(1);; 
+					} 
+					pageImsi.setPageNow(pageImsi.getPageNow()-1);
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -469,6 +495,13 @@ public class MainFrame extends JFrame {
 						add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
 					}
 					
+				}else if ("imsi".equals(object.toString())) {
+					
+					if(pageImsi.getPageNow()<pageImsi.getPageCount()-1){ 
+						pageImsi.setPageNow(pageImsi.getPageNow()+1); 
+						add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
+					}
+					
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -486,6 +519,10 @@ public class MainFrame extends JFrame {
 				} else if ("发送数据".equals(object.toString())) {
 					pageFsb.setPageNow(pageFsb.getPageCount()-1); 
 					add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
+				} else if ("imsi".equals(object.toString())) {
+					
+					pageImsi.setPageNow(pageImsi.getPageCount()-1); 
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
 				}
 				
 				setButtonIsEnabled(buttons, false);

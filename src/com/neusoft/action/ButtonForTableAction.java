@@ -57,11 +57,13 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			
 		} else if ("发送数据".equals(treeName)) {
 			addActionForFsb();
+			panel2.add(editButton);
+		}else if ("imsi".equals(treeName)) {
+			addActionForImsi();
+			panel2.add(editButton);
 		}
 		
-		panel2.add(editButton);
 		panel2.add(deleteButton);
-		//editButton.setBackground(Color.red);
 		
 		
 		
@@ -69,7 +71,7 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 	
 	public void addActionForJsb(){
 		
-      editButton.addActionListener(new ActionListener() {
+       editButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
@@ -208,6 +210,76 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			}
 		});
 	}
+	
+   public void addActionForImsi(){
+		
+		editButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				// TODO Auto-generated method stub
+				int i = table.getSelectedRow();
+
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				if(select){
+					Fsb fsb = new Fsb();
+					
+					String id = (String)model.getValueAt(i, 1);
+					fsb.setId(id);
+					String imsi = (String)model.getValueAt(i, 2);
+					fsb.setImsi(imsi);
+					String sjh = (String)model.getValueAt(i, 3);
+					fsb.setSjh(sjh);
+					String mc = (String)model.getValueAt(i, 4);
+					fsb.setMc(mc);
+					String bjh = (String)model.getValueAt(i, 5);
+					fsb.setBjh(bjh);
+					String nr = (String)model.getValueAt(i, 6);
+					fsb.setNr(nr);
+					
+					Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+					
+					if(modifyFsb){
+						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "修改失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}
+		});
+		
+      deleteButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				// TODO Auto-generated method stub
+				
+				int i = table.getSelectedRow();
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				
+				if(select){
+					Integer id = (Integer)model.getValueAt(i, 1);
+					Boolean removeImsi = ColumndateUtil.removeImsi(id);
+					if(removeImsi){
+						JOptionPane.showMessageDialog(null, "删除成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "删除失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println("Booleanelect:"+select);
+				
+			}
+		});
+	}
+
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,

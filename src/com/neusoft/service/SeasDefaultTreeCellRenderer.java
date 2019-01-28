@@ -54,7 +54,7 @@ public class SeasDefaultTreeCellRenderer extends DefaultTreeCellRenderer {
 			this.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.volumeTable"),true));
 		} else if ("发送数据".equals(str)) {
 			this.setIcon(ImageUtil.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.fileTable"),true));
-		} else if ("电子文件".equals(str)) {
+		} else if ("imsi".equals(str)) {
 			this.setIcon(ImageUtil
 					.getImageIcon(PropertiesUtil.prop.getProperty("FieldSettingFrame.JTabbedPane.electronicalFileTab"),true));
 		} else {

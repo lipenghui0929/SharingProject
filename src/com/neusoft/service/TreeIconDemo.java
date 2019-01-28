@@ -211,7 +211,7 @@ public class TreeIconDemo extends JFrame {
 		DefaultMutableTreeNode volumeNode = new DefaultMutableTreeNode("接收数据");
 		DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("发送数据");
 		DefaultMutableTreeNode electronicalFileNode = new DefaultMutableTreeNode(
-				"电子文件");
+				"imsi");
 		document.add(volumeNode);
 		document.add(fileNode);
 		document.add(electronicalFileNode);
@@ -273,7 +273,7 @@ public class TreeIconDemo extends JFrame {
 	public DefaultTreeModel createModel() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("接收数据");
 		DefaultMutableTreeNode b = new DefaultMutableTreeNode("发送数据");
-		DefaultMutableTreeNode c = new DefaultMutableTreeNode("电子文件");
+		DefaultMutableTreeNode c = new DefaultMutableTreeNode("imsi");
 		root.add(b);
 		root.add(c);
 		return new DefaultTreeModel(root);

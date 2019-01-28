@@ -9,14 +9,14 @@ import org.dom4j.Document;
 import com.neusoft.util.XMLUtil;
 
 /**
- * 案卷，文件和电子文件的所有的字段信息的处理类
+ * 案卷，文件和imsi的所有的字段信息的处理类
  * @author chenzhenhua
  *
  */
 public class FieldViewSetting {
 	
 	/**
-	 * 获取案卷，文件和电子文件的所有的字段信息
+	 * 获取案卷，文件和imsi的所有的字段信息
 	 * @param document
 	 * @param LevelsName
 	 * @return
@@ -24,7 +24,7 @@ public class FieldViewSetting {
 	public static Map<String, Map<String, String>> getTotalFieldsInfo(Document document,List<String> LevelsName){
 		Map<String, String> volumeFieldsInfo = null;//案卷级的字段集合
 		Map<String, String> fileFieldsInfo = null;//文件级的字段集合
-		Map<String, String> electronicalFieldsInfo = null;//电子文件级的字段集合
+		Map<String, String> electronicalFieldsInfo = null;//imsi级的字段集合
 		Map<String, Map<String, String>> totalFieldsInfo = null;
 		for (int i = 0; i < LevelsName.size(); i++) {
 			String level = LevelsName.get(i);
@@ -33,7 +33,7 @@ public class FieldViewSetting {
 			}else if ("发送数据".equals(level)) {
 				fileFieldsInfo = XMLUtil.getFieldsInfo(document, level);
 			}else{
-				//电子文件
+				//imsi
 				electronicalFieldsInfo = XMLUtil.getFieldsInfo(document, level);
 			}
 		}
@@ -47,7 +47,7 @@ public class FieldViewSetting {
 			totalFieldsInfo.put("发送数据", fileFieldsInfo);
 		}
 		if(electronicalFieldsInfo != null){
-			totalFieldsInfo.put("电子文件", electronicalFieldsInfo);
+			totalFieldsInfo.put("imsi", electronicalFieldsInfo);
 		}
 		return totalFieldsInfo;
 	}
