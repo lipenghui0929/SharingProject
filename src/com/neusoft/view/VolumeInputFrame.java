@@ -35,6 +35,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import com.neusoft.action.JTextFieldClickAction;
 import com.neusoft.base.ColumndateUtil;
 import com.neusoft.ddmk.damin.Fsb;
+import com.neusoft.ddmk.damin.Jsb;
 import com.neusoft.util.DateUtil;
 import com.neusoft.util.ExcelUtil;
 import com.neusoft.util.FileUtil;
@@ -62,7 +63,7 @@ public class VolumeInputFrame extends JFrame {
 	JPanel jPanel;
 	Map<String, String> allfieldInfo = null;
 	JLabel jLab = null; // 主键id
-
+    private String titleTxt;
 	/**
 	 * 创建窗体上的工具栏
 	 */
@@ -100,7 +101,7 @@ public class VolumeInputFrame extends JFrame {
 					// 数据校验成功，调用保存方法
 					String pathString = SystemUtil.getProjectRootPath() + File.separator
 							+ FileUtil.findExcelFile(SystemUtil.getProjectRootPath(), "数据").get(0).getName();
-					boolean isSuccess = saveVolumeDataToDb(pathString, "发送数据", components);
+					boolean isSuccess = saveVolumeDataToDb(pathString, titleTxt, components);
 					if (isSuccess) {
 						JOptionPane.showMessageDialog(null, "保存成功！", "提示", JOptionPane.WARNING_MESSAGE);
 					}
@@ -182,71 +183,178 @@ public class VolumeInputFrame extends JFrame {
 	}
 	
 	public boolean saveVolumeDataToDb(String pathString, String levelsName, Component[] components) {
+		
+		System.out.println("保存flag:"+levelsName);
 		boolean flag = true;
-		HSSFWorkbook hssFWorkbook = ExcelUtil.getHSSFWorkbookByExcelPath(pathString);
+		
+		/*HSSFWorkbook hssFWorkbook = ExcelUtil.getHSSFWorkbookByExcelPath(pathString);
 		HSSFSheet hssFSheet = ExcelUtil.getHSSFSheet(hssFWorkbook, levelsName);
-		/*List<String> fields = ExcelUtil.getFieldsByDataExcelPath(hssFSheet);
+		List<String> fields = ExcelUtil.getFieldsByDataExcelPath(hssFSheet);
 		HSSFRow hssFRow = ExcelUtil.createRow(hssFSheet);
 		int fieldCount = fields.size();*/
+		
 		int componentLength = components.length;
 		try {
-			Fsb fsb = new Fsb();
-			for (int j = 0; j < componentLength; j++) {
-				if (components[j] instanceof JTextField) {
-					// 得到每个文本框的名字
-		
-					JTextField jtextField = (JTextField) components[j];
-					String jTextFieldName = jtextField.getName();
-					String textField = jtextField.getText();
-					System.out.println("jTextFieldName = "  +  jTextFieldName);
-					System.out.println("字段= " + textField);
-					
-					if("名称".equals(jTextFieldName)){
-						fsb.setMc(textField);
-					}else if("昵称".equals(jTextFieldName)){
-						fsb.setNc(textField);
-					}else if("gh".equals(jTextFieldName)){
-						fsb.setGh(textField);
-					}else if("端口号".equals(jTextFieldName)){
-						fsb.setDkh(Integer.valueOf(textField));
-					}else if("卡池号".equals(jTextFieldName)){
-						fsb.setKch(Integer.valueOf(textField));
-					}else if("串码".equals(jTextFieldName)){
-						fsb.setImsi(textField);
-					}else if("本机号".equals(jTextFieldName)){
-						fsb.setBjh(textField);
-					}else if("号码".equals(jTextFieldName)){
-						fsb.setSjh(textField);
-					}else if("类型".equals(jTextFieldName)){
-						fsb.setLx(textField);
-					}else if("内容".equals(jTextFieldName)){
-						fsb.setNr(textField);
-					}else if("次数".equals(jTextFieldName)){
-						fsb.setCs(Integer.valueOf(textField));
-					}else if("休息".equals(jTextFieldName)){
-						fsb.setXx(textField);
-					}else if("时间".equals(jTextFieldName)){
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-						Date date = sdf.parse(textField);
-						fsb.setSj(date);
-					}else if("备注".equals(jTextFieldName)){
-						fsb.setBz(textField);
-					}else if("状态".equals(jTextFieldName)){
-						fsb.setZt(textField);
-					}
-					
-			    }	
+			if("接收数据".equals(levelsName)){
+				saveJsbforClien(componentLength,components,flag);
+			}else if("发送数据".equals(levelsName)){
+				saveFsbforClien(componentLength,components,flag);
+			}else if("imsi".equals(levelsName)){
+				saveImsiforClien(componentLength,components,flag);
 			}
-			flag = ColumndateUtil.saveFsb(fsb);
 
-			
 		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
 		}
 		return flag;
 	}
+	
+	public void saveFsbforClien(int length,Component[] components,boolean flag) throws Exception{
+		Fsb fsb = new Fsb();
+		for (int j = 0; j < length; j++) {
+			if (components[j] instanceof JTextField) {
+				// 得到每个文本框的名字
+	
+				JTextField jtextField = (JTextField) components[j];
+				String jTextFieldName = jtextField.getName();
+				String textField = jtextField.getText();
+				System.out.println("jTextFieldName = "  +  jTextFieldName);
+				System.out.println("字段= " + textField);
+				
+				if("名称".equals(jTextFieldName)){
+					fsb.setMc(textField);
+				}else if("昵称".equals(jTextFieldName)){
+					fsb.setNc(textField);
+				}else if("gh".equals(jTextFieldName)){
+					fsb.setGh(textField);
+				}else if("端口号".equals(jTextFieldName)){
+					fsb.setDkh(Integer.valueOf(textField));
+				}else if("卡池号".equals(jTextFieldName)){
+					fsb.setKch(Integer.valueOf(textField));
+				}else if("串码".equals(jTextFieldName)){
+					fsb.setImsi(textField);
+				}else if("本机号".equals(jTextFieldName)){
+					fsb.setBjh(textField);
+				}else if("号码".equals(jTextFieldName)){
+					fsb.setSjh(textField);
+				}else if("类型".equals(jTextFieldName)){
+					fsb.setLx(textField);
+				}else if("内容".equals(jTextFieldName)){
+					fsb.setNr(textField);
+				}else if("次数".equals(jTextFieldName)){
+					fsb.setCs(Integer.valueOf(textField));
+				}else if("休息".equals(jTextFieldName)){
+					fsb.setXx(textField);
+				}else if("时间".equals(jTextFieldName)){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = sdf.parse(textField);
+					fsb.setSj(date);
+				}else if("备注".equals(jTextFieldName)){
+					fsb.setBz(textField);
+				}else if("状态".equals(jTextFieldName)){
+					fsb.setZt(textField);
+				}
+				
+		    }	
+		}
+		flag = ColumndateUtil.saveFsb(fsb);
+	}
+	
+	public void saveJsbforClien(int length,Component[] components,boolean flag) throws Exception{
+		Jsb jsb = new Jsb();
+		for (int j = 0; j < length; j++) {
+			if (components[j] instanceof JTextField) {
+				// 得到每个文本框的名字
+	
+				JTextField jtextField = (JTextField) components[j];
+				String jTextFieldName = jtextField.getName();
+				String textField = jtextField.getText();
+				System.out.println("jTextFieldName = "  +  jTextFieldName);
+				System.out.println("字段= " + textField);
+				
+				if("名称".equals(jTextFieldName)){
+					jsb.setMc(textField);
+				}else if("昵称".equals(jTextFieldName)){
+					jsb.setNc(textField);
+				}else if("gh".equals(jTextFieldName)){
+					jsb.setGh(textField);
+				}else if("端口号".equals(jTextFieldName)){
+					jsb.setDkh(Integer.valueOf(textField));
+				}else if("卡池号".equals(jTextFieldName)){
+					jsb.setKch(Integer.valueOf(textField));
+				}else if("串码".equals(jTextFieldName)){
+					jsb.setImsi(textField);
+				}else if("接收号".equals(jTextFieldName)){
+					jsb.setBjh(textField);
+				}else if("本机号".equals(jTextFieldName)){
+					jsb.setSjh(textField);
+				}else if("内容".equals(jTextFieldName)){
+					jsb.setNr(textField);
+				}else if("时间".equals(jTextFieldName)){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = sdf.parse(textField);
+					jsb.setSj(date);
+				}else if("备注".equals(jTextFieldName)){
+					jsb.setBz(textField);
+				}
+				
+		    }	
+		}
+		flag = ColumndateUtil.saveJsb(jsb);
+	}
 
+	public void saveImsiforClien(int length,Component[] components,boolean flag) throws Exception{
+		Fsb fsb = new Fsb();
+		for (int j = 0; j < length; j++) {
+			if (components[j] instanceof JTextField) {
+				// 得到每个文本框的名字
+	
+				JTextField jtextField = (JTextField) components[j];
+				String jTextFieldName = jtextField.getName();
+				String textField = jtextField.getText();
+				System.out.println("jTextFieldName = "  +  jTextFieldName);
+				System.out.println("字段= " + textField);
+				
+				if("名称".equals(jTextFieldName)){
+					fsb.setMc(textField);
+				}else if("昵称".equals(jTextFieldName)){
+					fsb.setNc(textField);
+				}else if("gh".equals(jTextFieldName)){
+					fsb.setGh(textField);
+				}else if("端口号".equals(jTextFieldName)){
+					fsb.setDkh(Integer.valueOf(textField));
+				}else if("卡池号".equals(jTextFieldName)){
+					fsb.setKch(Integer.valueOf(textField));
+				}else if("串码".equals(jTextFieldName)){
+					fsb.setImsi(textField);
+				}else if("本机号".equals(jTextFieldName)){
+					fsb.setBjh(textField);
+				}else if("号码".equals(jTextFieldName)){
+					fsb.setSjh(textField);
+				}else if("类型".equals(jTextFieldName)){
+					fsb.setLx(textField);
+				}else if("内容".equals(jTextFieldName)){
+					fsb.setNr(textField);
+				}else if("次数".equals(jTextFieldName)){
+					fsb.setCs(Integer.valueOf(textField));
+				}else if("休息".equals(jTextFieldName)){
+					fsb.setXx(textField);
+				}else if("时间".equals(jTextFieldName)){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = sdf.parse(textField);
+					fsb.setSj(date);
+				}else if("备注".equals(jTextFieldName)){
+					fsb.setBz(textField);
+				}else if("状态".equals(jTextFieldName)){
+					fsb.setZt(textField);
+				}
+				
+		    }	
+		}
+		flag = ColumndateUtil.saveFsb(fsb);
+	}
+	
 	/**
 	 * 数据校验
 	 * 
@@ -432,7 +540,7 @@ public class VolumeInputFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VolumeInputFrame frame = new VolumeInputFrame();
+					VolumeInputFrame frame = new VolumeInputFrame("");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -446,15 +554,16 @@ public class VolumeInputFrame extends JFrame {
 	 * 
 	 * @param title
 	 */
-	public VolumeInputFrame(String title) {
+/*	public VolumeInputFrame(String title) {
 		this();
 		ViewSetingUtil.setJFrameTitle(this, title);
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public VolumeInputFrame() {
+	public VolumeInputFrame(String title) {
+		this.titleTxt = title;
 		CreateToolBar(this);
 		ViewSetingUtil.setLogo(this, "Frame.logo");
 		ViewSetingUtil.noChange(this);
@@ -467,8 +576,9 @@ public class VolumeInputFrame extends JFrame {
 		/**
 		 * 指定打开新增数据模块
 		 */
-		Map<String, String> fields = ExcelUtil.getFieldsByExcelPath(pathString, "发送数据");
-		produceViewByTemplate(createJPanel("数据管理-发送数据"), fields);
+		Map<String, String> fields = ExcelUtil.getFieldsByExcelPath(pathString, title);
+		produceViewByTemplate(createJPanel("数据管理-"+title), fields);
+		ViewSetingUtil.setJFrameTitle(this, title);
 	}
 
 	/**

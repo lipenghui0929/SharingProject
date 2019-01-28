@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -56,11 +57,13 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			
 		} else if ("发送数据".equals(treeName)) {
 			addActionForFsb();
+			panel2.add(editButton);
+		}else if ("imsi".equals(treeName)) {
+			addActionForImsi();
+			panel2.add(editButton);
 		}
 		
-		panel2.add(editButton);
 		panel2.add(deleteButton);
-		//editButton.setBackground(Color.red);
 		
 		
 		
@@ -68,24 +71,46 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 	
 	public void addActionForJsb(){
 		
-      editButton.addActionListener(new ActionListener() {
+       editButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
-				Jsb jsb = new Jsb();
-				int i = table.getSelectedRow();
-				//获取列数
-				int columnCount = model.getColumnCount(); 
-				/*for (int j = 0; j < columnCount; j++) {
-					String id = (String)model.getValueAt(i, j);
-				}*/
 				
-				/*Boolean removeFsb = fsbService.removeFsb(id);
-				System.out.println("deleteButton:"+id);*/
-				//JOptionPane.showMessageDialog(null, s);
-				//调用修改
-				Boolean modifyFsb = ColumndateUtil.modifyJsb(jsb);
+				int i = table.getSelectedRow();
+				
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				
+				if(select){
+					
+					Jsb jsb = new Jsb();
+					
+					Integer id = (Integer)model.getValueAt(i, 1);
+					jsb.setId(id);
+					String imsi = (String)model.getValueAt(i, 2);
+					jsb.setImsi(imsi);
+					String sjh = (String)model.getValueAt(i, 3);
+					jsb.setSjh(sjh);
+					String mc = (String)model.getValueAt(i, 4);
+					jsb.setMc(mc);
+					String bjh = (String)model.getValueAt(i, 5);
+					jsb.setBjh(bjh);
+					String nr = (String)model.getValueAt(i, 6);
+					jsb.setNr(nr);
+					
+					//调用修改
+					Boolean modifyJsb = ColumndateUtil.modifyJsb(jsb);
+					
+					if(modifyJsb){
+						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "修改失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		
@@ -94,11 +119,24 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
-				
+				//获取行数
 				int i = table.getSelectedRow();
-				String id = (String)model.getValueAt(i, 1);
-				Boolean removeFsb = ColumndateUtil.removeJsb(id);
-				System.out.println("deleteButton:"+id);
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				if(select){
+					Integer id = (Integer)model.getValueAt(i, 1);
+					Boolean removeJsb = ColumndateUtil.removeJsb(id);
+					if(removeJsb){
+						JOptionPane.showMessageDialog(null, "删除成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "删除失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+					System.out.println("deleteButtonJsb:"+id);
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println("Booleanelect:"+select);
+				
 			}
 		});
 	}
@@ -110,19 +148,38 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				// TODO Auto-generated method stub
-				Fsb fsb = new Fsb();
 				int i = table.getSelectedRow();
-				//获取列数
-				int columnCount = model.getColumnCount(); 
-				for (int j = 0; j < columnCount; j++) {
-					String id = (String)model.getValueAt(i, j);
+
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				if(select){
+					Fsb fsb = new Fsb();
+					
+					String id = (String)model.getValueAt(i, 1);
+					fsb.setId(id);
+					String imsi = (String)model.getValueAt(i, 2);
+					fsb.setImsi(imsi);
+					String sjh = (String)model.getValueAt(i, 3);
+					fsb.setSjh(sjh);
+					String mc = (String)model.getValueAt(i, 4);
+					fsb.setMc(mc);
+					String bjh = (String)model.getValueAt(i, 5);
+					fsb.setBjh(bjh);
+					String nr = (String)model.getValueAt(i, 6);
+					fsb.setNr(nr);
+					
+					Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+					
+					if(modifyFsb){
+						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "修改失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
 				}
 				
-				/*Boolean removeFsb = fsbService.removeFsb(id);
-				System.out.println("deleteButton:"+id);*/
-				//JOptionPane.showMessageDialog(null, s);
-				//调用修改
-				Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+				
 			}
 		});
 		
@@ -133,12 +190,96 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 				// TODO Auto-generated method stub
 				
 				int i = table.getSelectedRow();
-				String id = (String)model.getValueAt(i, 1);
-				Boolean removeFsb = ColumndateUtil.removeFsb(id);
-				System.out.println("deleteButton:"+id);
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				
+				if(select){
+					String id = (String)model.getValueAt(i, 1);
+					Boolean removeFsb = ColumndateUtil.removeFsb(id);
+					if(removeFsb){
+						JOptionPane.showMessageDialog(null, "删除成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "删除失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+					System.out.println("deleteButtonFsb:"+id);
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println("Booleanelect:"+select);
+				
 			}
 		});
 	}
+	
+   public void addActionForImsi(){
+		
+		editButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				// TODO Auto-generated method stub
+				int i = table.getSelectedRow();
+
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				if(select){
+					Fsb fsb = new Fsb();
+					
+					String id = (String)model.getValueAt(i, 1);
+					fsb.setId(id);
+					String imsi = (String)model.getValueAt(i, 2);
+					fsb.setImsi(imsi);
+					String sjh = (String)model.getValueAt(i, 3);
+					fsb.setSjh(sjh);
+					String mc = (String)model.getValueAt(i, 4);
+					fsb.setMc(mc);
+					String bjh = (String)model.getValueAt(i, 5);
+					fsb.setBjh(bjh);
+					String nr = (String)model.getValueAt(i, 6);
+					fsb.setNr(nr);
+					
+					Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+					
+					if(modifyFsb){
+						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "修改失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}
+		});
+		
+      deleteButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				// TODO Auto-generated method stub
+				
+				int i = table.getSelectedRow();
+				Boolean select = (Boolean)model.getValueAt(i, 0);
+				
+				if(select){
+					Integer id = (Integer)model.getValueAt(i, 1);
+					Boolean removeImsi = ColumndateUtil.removeImsi(id);
+					if(removeImsi){
+						JOptionPane.showMessageDialog(null, "删除成功！", "提示",JOptionPane.ERROR_MESSAGE);
+					}else{
+						JOptionPane.showMessageDialog(null, "删除失败！", "提示",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "请选择一条数据进行操作！", "提示",JOptionPane.ERROR_MESSAGE);
+				}
+				System.out.println("Booleanelect:"+select);
+				
+			}
+		});
+	}
+
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,

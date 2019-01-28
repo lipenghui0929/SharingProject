@@ -13,7 +13,7 @@ public interface JsbService {
 	
     public Boolean saveJsb(Jsb jsb);
 	
-	public Boolean removeJsb(String id);
+	public Boolean removeJsb(Integer id);
 	
 	public Boolean modifyJsb(Jsb jsb);
 	

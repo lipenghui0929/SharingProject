@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -56,6 +57,7 @@ public class MainFrame extends JFrame {
 	
 	private Page pageFsb = new Page();
 	private Page pageJsb = new Page();
+	private Page pageImsi = new Page();
 	
 	public JTree tree;
 	private JFrame mainFrame = this;
@@ -74,18 +76,29 @@ public class MainFrame extends JFrame {
 	//查询模块
 	JPanel queryPanelForJsb = new JPanel();
 	JPanel queryPanelForFsb = new JPanel();
+	JPanel queryPanelForImsi = new JPanel();
 	//分页
 	JPanel pagingPanel = new JPanel();
     
-	//查询按钮
-	JTextField sjhText;
-	JTextField sjhField;
+	//JSB查询按钮
+	JTextField sjhTextForJsb;
+	JTextField sjhFieldForJsb;
 	
-	JTextField bjhText;
-	JTextField bjhField;
+	JTextField bjhTextForJsb;
+	JTextField bjhFieldForJsb;
 	
-	JTextField dateText;
-	DatePicker datepick;
+	JTextField dateTextForJsb;
+	DatePicker datepickForJsb;
+	
+	//fSB查询按钮
+	JTextField sjhTextForFsb;
+	JTextField sjhFieldForFsb;
+	
+	JTextField bjhTextForFsb;
+	JTextField bjhFieldForFsb;
+	
+	JTextField dateTextForFsb;
+	DatePicker datepickForFsb;
 	
 	
 	
@@ -123,15 +136,20 @@ public class MainFrame extends JFrame {
 		// addBtn.addActionListener(new ButtonClickAction(frame));
 		addBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				// if (volumeInputFrame == null) {
-				final VolumeInputFrame volumeInputFrame = new VolumeInputFrame("");
-				volumeInputFrame.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent e) {
-						ViewSetingUtil.closeWarn(volumeInputFrame);
-						// volumeInputFrame.dispose();
-						// volumeInputFrame = null;
-					}
-				});
+				Object[] possibleValues = {"发送数据", "imsi" };
+				Object selectedValue =JOptionPane.showInputDialog(null, "请选择新增数据模块：","选择角色：", JOptionPane.INFORMATION_MESSAGE, null, possibleValues,possibleValues[0]);
+				if(selectedValue != null){
+					System.out.println("selectedValue"+selectedValue);
+					final VolumeInputFrame volumeInputFrame = new VolumeInputFrame(selectedValue.toString());
+					volumeInputFrame.addWindowListener(new WindowAdapter() {
+						public void windowClosing(WindowEvent e) {
+							ViewSetingUtil.closeWarn(volumeInputFrame);
+							// volumeInputFrame.dispose();
+							// volumeInputFrame = null;
+						}
+					});
+				}
+				
 				// } else {
 				// volumeInputFrame.dispose();
 				// volumeInputFrame = null;
@@ -155,13 +173,14 @@ public class MainFrame extends JFrame {
 		});
 		
 		toolBar.addSeparator();
-		toolBar.add(allSelectBtn);
-		toolBar.addSeparator();
 		toolBar.add(addBtn);
 		toolBar.addSeparator();
 		toolBar.add(editBtn);
 		toolBar.addSeparator();
 		toolBar.add(deleteBtn);
+		
+		toolBar.addSeparator();
+		toolBar.add(allSelectBtn);
 		
 		
 		
@@ -170,7 +189,8 @@ public class MainFrame extends JFrame {
 		buttons = new ArrayList<JButton>();
 		for (Component c : toolBar.getComponents()) {
 			if (c instanceof JButton) {
-				if (!"刷新".equals(((JButton) c).getText())) {
+				String text = ((JButton) c).getText();
+				if ((!"刷新".equals(text)) && (!"增加".equals(text))) {
 					buttons.add((JButton) c);
 				}
 			}
@@ -211,12 +231,10 @@ public class MainFrame extends JFrame {
 		exitSystemWarn();
 		createJSplitPane(this);
 		addToolBar(this);
-		setButtons();
-		pageFsb.setTatolCount(ColumndateUtil.getConutForFsb(capsulationFsb()));
-		pageJsb.setTatolCount(ColumndateUtil.getConutForJsb(capsulationJsb()));
 		addPagePanel();
 		addQueryPanelForJsb();
 		addQueryPanelForFsb();
+		addQueryPanelForImsi();
 		new TimeGo().start();// 启动线程
 	}
 
@@ -277,17 +295,28 @@ public class MainFrame extends JFrame {
 				if (node == null)
 					return;
 				Object object = node.getUserObject();
+				System.out.println(object.toString());
 				pageFsb.setPageNow(0);
-				/*// 说明选中的节点是档案门类的节点，而不是选中档案管理，接收数据，文件，电子文件节点
-				// 选中档案门类节点，主窗口的右侧加载该档案门类下的接收数据，文件，电子文件(3级)或者文件，电子文件(2级)*/
 				if ("接收数据".equals(object.toString())) {
-					//add(JSplitPaneUtil.createJSplitPaneByBranch(node, leftJPanel, jSplitPane));
-					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForJsb,pagingPanel,pageFsb));
+					//初始化页数
+					pageJsb.setPageNow(0);
+					pageJsb.setTatolCount(ColumndateUtil.getConutForJsb(capsulationJsb()));
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForJsb,pagingPanel,pageJsb));
 					setButtonIsEnabled(buttons, true);
 				} else if ("发送数据".equals(object.toString())) {
+					//初始化页数
+					pageFsb.setPageNow(0);
+					pageFsb.setTatolCount(ColumndateUtil.getConutForFsb(capsulationFsb()));
 					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForFsb,pagingPanel,pageFsb));
 					setButtonIsEnabled(buttons, true);
-				} else {
+				} else if ("imsi".equals(object.toString())) {
+					//初始化页数
+					pageImsi.setPageNow(0);
+					pageImsi.setTatolCount(ColumndateUtil.getConutForImsi());
+					
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
+					setButtonIsEnabled(buttons, true);
+				}  else {
 					jSplitPane.setLeftComponent(leftJPanel);
 					jSplitPane.setRightComponent(rightJPanel);
 					// 设置中间分割条大小
@@ -311,11 +340,19 @@ public class MainFrame extends JFrame {
 	 */
 	public void addQueryPanelForJsb(){
 		
+		sjhTextForJsb = new JTextField("接收号:");
+		sjhFieldForJsb = new JTextField(15);
+		
+		bjhTextForJsb  = new JTextField("本机号:");
+		bjhFieldForJsb = new JTextField(15);
+		
+		dateTextForJsb = new JTextField("时间:");
+		datepickForJsb = DatePluginUtil.getDatePicker();
 		
 		JButton queryBtn = new JButton("查询");
 		queryBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				
+				System.out.println("jsb查询");
 				Jsb jsb = capsulationJsb();
 				pageJsb.setPageNow(0);
 				pageJsb.setTatolCount(ColumndateUtil.getConutForJsb(jsb));
@@ -324,15 +361,24 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		queryPanelForJsb.add(sjhText);
-		queryPanelForJsb.add(sjhField);
-		queryPanelForJsb.add(bjhText);
-		queryPanelForJsb.add(bjhField);
-		queryPanelForJsb.add(dateText);
-		queryPanelForJsb.add(datepick);
+		queryPanelForJsb.add(sjhTextForJsb);
+		queryPanelForJsb.add(sjhFieldForJsb);
+		queryPanelForJsb.add(bjhTextForJsb);
+		queryPanelForJsb.add(bjhFieldForJsb);
+		queryPanelForJsb.add(dateTextForJsb);
+		queryPanelForJsb.add(datepickForJsb);
 		queryPanelForJsb.add(queryBtn);
 	}
 	public void addQueryPanelForFsb(){
+		
+		sjhTextForFsb = new JTextField("接收号:");
+		sjhFieldForFsb = new JTextField(15);
+		
+		bjhTextForFsb  = new JTextField("本机号:");
+		bjhFieldForFsb = new JTextField(15);
+		
+		dateTextForFsb = new JTextField("时间:");
+		datepickForFsb = DatePluginUtil.getDatePicker();
 		
 		JButton queryBtn = new JButton("查询");
 		queryBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -345,14 +391,19 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		queryPanelForFsb.add(sjhText);
-		queryPanelForFsb.add(sjhField);
-		queryPanelForFsb.add(bjhText);
-		queryPanelForFsb.add(bjhField);
-		queryPanelForFsb.add(dateText);
-		queryPanelForFsb.add(datepick);
+		queryPanelForFsb.add(sjhTextForFsb);
+		queryPanelForFsb.add(sjhFieldForFsb);
+		queryPanelForFsb.add(bjhTextForFsb);
+		queryPanelForFsb.add(bjhFieldForFsb);
+		queryPanelForFsb.add(dateTextForFsb);
+		queryPanelForFsb.add(datepickForFsb);
 		queryPanelForFsb.add(queryBtn);
 		jToolBarFieldAction.UpLoadFile(queryPanelForFsb);
+	}
+	
+	public void addQueryPanelForImsi(){
+		
+		jToolBarFieldAction.UpLoadFile(queryPanelForImsi);
 	}
 	
 	//分页面板
@@ -382,6 +433,9 @@ public class MainFrame extends JFrame {
 				} else if ("发送数据".equals(object.toString())) {
 					pageFsb.setPageNow(0);
 					add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
+				}else if ("imsi".equals(object.toString())) {
+					pageImsi.setPageNow(0);
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -407,6 +461,13 @@ public class MainFrame extends JFrame {
 					} 
 					pageFsb.setPageNow(pageFsb.getPageNow()-1);
 					add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
+				}
+				else if ("imsi".equals(object.toString())) {
+					if(pageImsi.getPageNow()<=0){ 
+						pageImsi.setPageNow(1);; 
+					} 
+					pageImsi.setPageNow(pageImsi.getPageNow()-1);
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -434,6 +495,13 @@ public class MainFrame extends JFrame {
 						add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
 					}
 					
+				}else if ("imsi".equals(object.toString())) {
+					
+					if(pageImsi.getPageNow()<pageImsi.getPageCount()-1){ 
+						pageImsi.setPageNow(pageImsi.getPageNow()+1); 
+						add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
+					}
+					
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -451,6 +519,10 @@ public class MainFrame extends JFrame {
 				} else if ("发送数据".equals(object.toString())) {
 					pageFsb.setPageNow(pageFsb.getPageCount()-1); 
 					add(JSplitPaneUtil.createJSplitPaneByButtonForFsb(leftJPanel, jSplitPane,capsulationFsb(),queryPanelForFsb,pagingPanel,pageFsb));
+				} else if ("imsi".equals(object.toString())) {
+					
+					pageImsi.setPageNow(pageImsi.getPageCount()-1); 
+					add(JSplitPaneUtil.createJSplitPaneByLeafNode(node, leftJPanel, jSplitPane,queryPanelForImsi,pagingPanel,pageImsi));
 				}
 				
 				setButtonIsEnabled(buttons, false);
@@ -463,11 +535,12 @@ public class MainFrame extends JFrame {
 	public Fsb capsulationFsb(){
 		Fsb fsb = new Fsb();
 		//接收号
-		String bjh = bjhField.getText().trim();
+		String bjh = bjhFieldForFsb.getText().trim();
 		//本机号
-		String sjh = sjhField.getText().trim();
+		String sjh = sjhFieldForFsb.getText().trim();
+		System.out.println(sjh);
 		//时间
-		Date date = (Date)datepick.getValue();
+		Date date = (Date)datepickForFsb.getValue();
 		
 		if(bjh != null && !"".equals(bjh)){
 			fsb.setBjh(bjh);
@@ -481,17 +554,19 @@ public class MainFrame extends JFrame {
 			fsb.setSj(date);
 			fsb.setQueryforSj(true);
 		}
+		System.out.println("fsb:[bjh-"+bjh+";sjh-"+sjh+";date-"+date+"]");
 		return fsb;
 	}
 	
 	public Jsb capsulationJsb(){
 		Jsb jsb = new Jsb();
 		//接收号
-		String bjh = bjhField.getText().trim();
+		String bjh = bjhFieldForJsb.getText().trim();
 		//本机号
-		String sjh = sjhField.getText().trim();
+		String sjh = sjhFieldForJsb.getText().trim();
+		System.out.println(sjh);
 		//时间
-		Date date = (Date)datepick.getValue();
+		Date date = (Date)datepickForJsb.getValue();
 		
 		if(bjh != null && !"".equals(bjh)){
 			jsb.setBjh(bjh);
@@ -505,22 +580,11 @@ public class MainFrame extends JFrame {
 			jsb.setSj(date);
 			jsb.setQueryforSj(true);
 		}
+		
+		System.out.println("jsb:[bjh-"+bjh+";sjh-"+sjh+";date-"+date+"]");
 		return jsb;
 	}
 	
-	//按钮组
-	public void setButtons(){
-		
-		sjhText = new JTextField("接收号:");
-		sjhField = new JTextField(15);
-		
-		bjhText  = new JTextField("本机号:");
-		bjhField = new JTextField(15);
-		
-		dateText= new JTextField("时间:");
-		datepick = DatePluginUtil.getDatePicker();
-		
-	}
 	/**
 	 * 点击退出系统时弹出提示信息
 	 */

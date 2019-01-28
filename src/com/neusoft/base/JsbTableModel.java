@@ -15,8 +15,8 @@ public class JsbTableModel extends AbstractTableModel {
 	Object[][] data = null;
 
 	// 定义表格每一列的数据类型
-	/*Class[] typeArray = { Boolean.class, Object.class, Object.class,
-			Object.class, Object.class, Object.class };*/
+	Class[] typeArray = { Boolean.class, String.class, String.class,
+			String.class, String.class, String.class,String.class,Object.class };
    
 
 	public JsbTableModel(Page page) {
@@ -60,10 +60,11 @@ public class JsbTableModel extends AbstractTableModel {
 	// 使表格具有可编辑性
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 1) {
-	        return false;
+		  
+		if (columnIndex == head.length - 1 || columnIndex == 0) {
+			return true;
 	    } else {
-	        return true;
+	        return false;
 	    }
 	}
  
@@ -75,11 +76,14 @@ public class JsbTableModel extends AbstractTableModel {
 	}
 	
 	 public Class getColumnClass(int c) {
-		// System.out.println("getColumnClass"+c);
-		 if(data != null && ((c == 0) || (c == head.length -1))){
-			 return getValueAt(0, c).getClass();
-		 }
-		 return null;
+	
+		 /*if(data != null && (getRowCount() != 0)){
+			 Object valueAt = getValueAt(0, c);
+			 if(valueAt != null){
+				 return valueAt.getClass();
+			 }
+		 }*/
+		 return typeArray[c];
 	    
 	 }
 

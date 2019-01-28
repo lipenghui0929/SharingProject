@@ -5,26 +5,27 @@ import javax.swing.table.AbstractTableModel;
 import com.neusoft.ddmk.damin.Fsb;
 import com.neusoft.ddmk.damin.Page;
 
-public class FsbTableModel extends AbstractTableModel {
+public class ImsiTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 2564872464841573178L;
 	
 	// 定义表头数据
-	String[] head = { "选择","ID", "IMSI", "接收号", "状态(可用、不可用)", "本机号","内容","操作"};
+	String[] head = { "选择","ID","串码","卡号","号码","卡小号","SN码","机型","版本号","厂商","CMIT","A代码","B代码","注册","状态","备注1","备注2","操作"};
 	
 	Object[][] data = null;
 
 	// 定义表格每一列的数据类型
-	Class[] typeArray = { Boolean.class, String.class, String.class,
+	Class[] typeArray = { Boolean.class, Integer.class, String.class,
+			String.class, String.class, String.class,String.class,String.class,
+			String.class, String.class, String.class,String.class,String.class,
 			String.class, String.class, String.class,String.class,Object.class };
 
 
-	public FsbTableModel(Page page) {
-		data = ColumndateUtil.listFsbArray(head.length,page);
+	public ImsiTableModel(Page page) {
+		data = ColumndateUtil.listImsiArray(head.length,page);
 	}
 	
-	public FsbTableModel(Fsb fsb,Page page) {
-		data = ColumndateUtil.listFsbArray(fsb,head.length,page);
+	public ImsiTableModel() {
 	}
 	
 	// 获得表格的列数
