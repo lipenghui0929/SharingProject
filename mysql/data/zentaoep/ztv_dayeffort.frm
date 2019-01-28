@@ -1,0 +1,16 @@
+TYPE=VIEW
+query=select round(sum(`zentaoep`.`zt_effort`.`consumed`),1) AS `consumed`,`zentaoep`.`zt_effort`.`date` AS `date` from `zentaoep`.`zt_effort` group by `zentaoep`.`zt_effort`.`date`
+md5=3bcab1b8453ec183ab0d8d952d9f63b4
+updatable=0
+algorithm=0
+definer_user=root
+definer_host=localhost
+suid=2
+with_check_option=0
+timestamp=2019-01-08 07:59:19
+create-version=2
+source=select round(sum(`zt_effort`.`consumed`),1) AS `consumed`,`zt_effort`.`date` AS `date` from `zt_effort` group by `zt_effort`.`date`
+client_cs_name=utf8mb4
+connection_cl_name=utf8mb4_general_ci
+view_body_utf8=select round(sum(`zentaoep`.`zt_effort`.`consumed`),1) AS `consumed`,`zentaoep`.`zt_effort`.`date` AS `date` from `zentaoep`.`zt_effort` group by `zentaoep`.`zt_effort`.`date`
+mariadb-version=100036
