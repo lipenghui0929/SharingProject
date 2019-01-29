@@ -15,9 +15,8 @@ import javax.swing.table.TableCellRenderer;
 
 import com.neusoft.base.ColumndateUtil;
 import com.neusoft.ddmk.damin.Fsb;
+import com.neusoft.ddmk.damin.Imsi;
 import com.neusoft.ddmk.damin.Jsb;
-import com.neusoft.service.FsbService;
-import com.neusoft.service.impl.FsbServiceImpl;
 
 public class ButtonForTableAction extends AbstractCellEditor implements TableCellRenderer, TableCellEditor{
 
@@ -222,22 +221,43 @@ public class ButtonForTableAction extends AbstractCellEditor implements TableCel
 
 				Boolean select = (Boolean)model.getValueAt(i, 0);
 				if(select){
-					Fsb fsb = new Fsb();
+					Imsi imsiData = new Imsi();
 					
-					String id = (String)model.getValueAt(i, 1);
-					fsb.setId(id);
-					String imsi = (String)model.getValueAt(i, 2);
-					fsb.setImsi(imsi);
-					String sjh = (String)model.getValueAt(i, 3);
-					fsb.setSjh(sjh);
-					String mc = (String)model.getValueAt(i, 4);
-					fsb.setMc(mc);
-					String bjh = (String)model.getValueAt(i, 5);
-					fsb.setBjh(bjh);
-					String nr = (String)model.getValueAt(i, 6);
-					fsb.setNr(nr);
+					Integer id = (Integer)model.getValueAt(i, 1);
+					imsiData.setId(id);
+					String imei = (String)model.getValueAt(i, 2);
+					imsiData.setImei(imei);
+					String imsi = (String)model.getValueAt(i, 3);
+					imsiData.setImsi(imsi);
+					String haoma = (String)model.getValueAt(i, 4);
+					imsiData.setHaoma(haoma);
+					String ccid = (String)model.getValueAt(i, 5);
+					imsiData.setCcid(ccid);
+					String sn = (String)model.getValueAt(i, 6);
+					imsiData.setSn(sn);
+					String jx = (String)model.getValueAt(i, 7);
+					imsiData.setJx(jx);
+					String rjbb = (String)model.getValueAt(i, 8);
+					imsiData.setRjbb(rjbb);
+					String cs = (String)model.getValueAt(i, 9);
+					imsiData.setCs(cs);
+					String cmiit = (String)model.getValueAt(i, 10);
+					imsiData.setCmiit(cmiit);
+					String a = (String)model.getValueAt(i, 11);
+					imsiData.setA(a);
+					String b = (String)model.getValueAt(i, 12);
+					imsiData.setB(b);
+					String zc = (String)model.getValueAt(i, 13);
+					imsiData.setZc(zc);
+					String st = (String)model.getValueAt(i, 14);
+					imsiData.setStruts(st);
+					String bz1 = (String)model.getValueAt(i, 15);
+					imsiData.setBeizhu1(bz1);
+					String bz2 = (String)model.getValueAt(i, 16);
+					imsiData.setBeizhu2(bz2);
 					
-					Boolean modifyFsb = ColumndateUtil.modifyFsb(fsb);
+					
+					Boolean modifyFsb = ColumndateUtil.modifyImsi(imsiData);
 					
 					if(modifyFsb){
 						JOptionPane.showMessageDialog(null, "修改成功！", "提示",JOptionPane.ERROR_MESSAGE);

@@ -10,7 +10,7 @@ public class ImsiTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 2564872464841573178L;
 	
 	// 定义表头数据
-	String[] head = { "选择","ID","串码","卡号","号码","卡小号","SN码","机型","版本号","厂商","CMIT","A代码","B代码","注册","状态","备注1","备注2","操作"};
+	String[] head = { "选择","ID","串码","卡号","号码","卡小号","SN码","机型","版本号","厂商","CMIIT","A代码","B代码","注册","状态","备注1","备注2","操作"};
 	
 	Object[][] data = null;
 
