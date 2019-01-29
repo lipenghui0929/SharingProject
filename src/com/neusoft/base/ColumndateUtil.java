@@ -176,13 +176,25 @@ public class ColumndateUtil {
 			datas = new Object[list.size()][arrysSize];
 			for (int i = 0; i < list.size(); i++) {
 				datas[i][0] = new Boolean(false);
-				/*datas[i][1] = list.get(i).getId();
-				datas[i][2] = list.get(i).getImsi();
-				datas[i][3] = list.get(i).getSjh();
-				datas[i][4] = list.get(i).getMc();
-				datas[i][5] = list.get(i).getBjh();
-				datas[i][6] = list.get(i).getNr();*/
-				datas[i][7] = new Object();
+				
+				datas[i][1] = list.get(i).getId();
+				datas[i][2] = list.get(i).getImei();
+				datas[i][3] = list.get(i).getImsi();
+				datas[i][4] = list.get(i).getHaoma();
+				datas[i][5] = list.get(i).getCcid();
+				datas[i][6] = list.get(i).getSn();
+				datas[i][7] = list.get(i).getJx();
+                datas[i][8] = list.get(i).getRjbb();
+				datas[i][9] = list.get(i).getCs();
+				datas[i][10] = list.get(i).getCmiit();
+				datas[i][11] = list.get(i).getA();
+				datas[i][12] = list.get(i).getB();
+				datas[i][13] = list.get(i).getZc();
+				datas[i][14] = list.get(i).getStruts();
+				datas[i][15] = list.get(i).getBeizhu1();
+				datas[i][16] = list.get(i).getBeizhu2();
+				
+				datas[i][17] = new Object();
 			}
 		}
 		

@@ -33,20 +33,23 @@ public class ImsiDaoImpl implements ImsiDao {
 			while (rs.next()) {
 				
 				Imsi imsi=new Imsi();
-				imsi.setId(rs.getInt(1));
+				
+				imsi.setId(rs.getInt(1));               
 				imsi.setImei(rs.getString(2));
-				imsi.setHaoma(rs.getString(3));
-				imsi.setCcid(rs.getString(4));
-				imsi.setSn(rs.getString(5));
-				imsi.setJx(rs.getString(6));
-				imsi.setRjbb(rs.getString(7));
-				imsi.setCs(rs.getString(8));
-				imsi.setCmiit(rs.getString(9));
-				imsi.setA(rs.getString(10));
-				imsi.setB(rs.getString(11));
-				imsi.setZc(rs.getString(12));
-				imsi.setBeizhu1(rs.getString(13));
-				imsi.setBeizhu2(rs.getString(14));
+				imsi.setImsi(rs.getString(3));
+				imsi.setHaoma(rs.getString(4));
+				imsi.setCcid(rs.getString(5));
+				imsi.setSn(rs.getString(6));
+				imsi.setJx(rs.getString(7));
+				imsi.setRjbb(rs.getString(8));
+				imsi.setCs(rs.getString(9));
+				imsi.setCmiit(rs.getString(10));
+				imsi.setA(rs.getString(11));
+				imsi.setB(rs.getString(12));
+				imsi.setZc(rs.getString(13));
+				imsi.setStruts(rs.getString(14));
+				imsi.setBeizhu1(rs.getString(15));
+				imsi.setBeizhu2(rs.getString(16));
 				
 				imsis.add(imsi);
 			}
@@ -107,7 +110,7 @@ public class ImsiDaoImpl implements ImsiDao {
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		try{
-			String sql = "insert into imsi (imei,imsi,haoma,ccid,sn,jx,rjbb,cs,cmiit,a,b,zc,struts,beizhu1,beizhu2) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "insert into imsi (imei,imsi,haoma,ccid,sn,jx,rjbb,cs,cmiit,a,b,zc,struts,beizhu1,beizhu2) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			conn = JDBCAccessUtil.getConnection("send.url");
 			pstm = conn.prepareStatement(sql);
 			
